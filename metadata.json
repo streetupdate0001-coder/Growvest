@@ -1,0 +1,8 @@
+{
+  "name": "Growvest - Invest & Grow Your Wealth",
+  "description": "Professional international financial technology and wealth management platform featuring live market intelligence, multi-currency tracking, AI assistance, security center, and institutional-grade portfolio management.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

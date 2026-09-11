@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="growvestGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF275"/>
+      <stop offset="25%" stop-color="#FFD700"/>
+      <stop offset="70%" stop-color="#FFB700"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+    <linearGradient id="growvestBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a231b"/>
+      <stop offset="60%" stop-color="#061611"/>
+      <stop offset="100%" stop-color="#020806"/>
+    </linearGradient>
+    <linearGradient id="growvestEmerald" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6ee7b7"/>
+      <stop offset="50%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="116" fill="url(#growvestBg)"/>
+  <rect x="12" y="12" width="488" height="488" rx="104" fill="none" stroke="#FFD700" stroke-width="14" stroke-opacity="0.85"/>
+  <rect x="28" y="28" width="456" height="456" rx="88" fill="none" stroke="url(#growvestEmerald)" stroke-width="8" stroke-opacity="0.75"/>
+  <path d="M 370 172 C 338 134 290 120 242 120 C 168 120 114 180 114 256 C 114 332 168 392 242 392 C 312 392 364 346 376 276 L 242 276 L 242 224 L 396 224 L 396 276 C 380 366 316 424 242 424 C 150 424 82 350 82 256 C 82 162 150 88 242 88 C 304 88 360 108 402 152 Z" fill="url(#growvestGold)" stroke="#FFFBEB" stroke-width="4" stroke-opacity="0.4"/>
+  <path d="M 268 276 L 320 224 L 372 276" fill="none" stroke="url(#growvestEmerald)" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="396" cy="120" r="30" fill="#FFE600" stroke="#D97706" stroke-width="6"/>
+  <circle cx="396" cy="120" r="14" fill="#FFFFFF" opacity="0.8"/>
+</svg>
