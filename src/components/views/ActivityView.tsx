@@ -63,8 +63,8 @@ export const ActivityView: React.FC = () => {
 
       if (!matchesSearch) return false;
       if (typeFilter === 'deposit' && tx.type !== 'deposit') return false;
-      if (typeFilter === 'withdraw' && tx.type !== 'withdrawal' && tx.type !== 'withdraw') return false;
-      if (typeFilter === 'invest' && tx.type !== 'investment' && tx.type !== 'invest') return false;
+      if (typeFilter === 'withdraw' && (tx.type as string) !== 'withdrawal' && (tx.type as string) !== 'withdraw') return false;
+      if (typeFilter === 'invest' && (tx.type as string) !== 'investment' && (tx.type as string) !== 'invest') return false;
       return true;
     });
 
@@ -252,7 +252,7 @@ export const ActivityView: React.FC = () => {
             ) : (
               filteredAndSortedTransactions.map(tx => {
                 const isDeposit = tx.type === 'deposit';
-                const isWithdraw = tx.type === 'withdrawal' || tx.type === 'withdraw';
+                const isWithdraw = (tx.type as string) === 'withdrawal' || (tx.type as string) === 'withdraw';
                 const assetLabel = tx.currency || (tx.destinationOrSource?.split(' ')[0]) || 'USD';
                 return (
                   <tr key={tx.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">

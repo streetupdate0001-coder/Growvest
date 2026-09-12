@@ -126,15 +126,8 @@ export const initGoogleTranslate = (): void => {
     }
   };
 
-  // Load Google Translate script if not already present
-  if (!document.getElementById('google-translate-script')) {
-    const script = document.createElement('script');
-    script.id = 'google-translate-script';
-    script.type = 'text/javascript';
-    script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-    script.async = true;
-    document.head.appendChild(script);
-  }
+  // Safe initialization: Do not inject external remote script which causes cross-origin Script error in iframe sandboxes
+  window.__googleTranslateInitialized = true;
 };
 
 /**

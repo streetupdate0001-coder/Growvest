@@ -61,27 +61,9 @@ class SmartsuppService {
     win._smartsupp.orientation = config?.orientation || 'right';
     win._smartsupp.hideWidget = true; // We use our custom one-click UI layer that bridges with Smartsupp
 
-    // Inject Smartsupp Script asynchronously
-    if (!document.getElementById('smartsupp-script')) {
-      const script = document.createElement('script');
-      script.id = 'smartsupp-script';
-      script.type = 'text/javascript';
-      script.async = true;
-      script.src = 'https://www.smartsuppchat.com/loader.js?';
-      script.onload = () => {
-        this.isInitialized = true;
-        this.bindSmartsuppEvents();
-      };
-      script.onerror = () => {
-        // Fallback gracefully to embedded responsive chat
-        this.isInitialized = true;
-      };
-      const firstScript = document.getElementsByTagName('script')[0];
-      firstScript?.parentNode?.insertBefore(script, firstScript);
-    } else {
-      this.isInitialized = true;
-      this.bindSmartsuppEvents();
-    }
+    // Initialize service state cleanly without injecting remote cross-origin script
+    this.isInitialized = true;
+    this.bindSmartsuppEvents();
   }
 
   /**

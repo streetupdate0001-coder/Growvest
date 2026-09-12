@@ -54,7 +54,7 @@ export const InvestmentHistorySection: React.FC<InvestmentHistorySectionProps> =
       amountUsd: number;
       date: string;
       maturityDate?: string;
-      status: 'active' | 'completed' | 'pending' | 'matured';
+      status: 'active' | 'completed' | 'pending' | 'matured' | 'cancelled';
       reference: string;
       roiPercent?: number;
       accruedYieldUsd?: number;

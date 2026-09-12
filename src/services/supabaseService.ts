@@ -679,6 +679,29 @@ class SupabaseService {
       return { success: false, error: err.message || 'Failed to allocate investment.' };
     }
   }
+
+  // --------------------------------------------------------------------------
+  // STORAGE (PROOF OF PAYMENT & IDENTITY VERIFICATION DOCUMENTS)
+  // --------------------------------------------------------------------------
+
+  async uploadFile(bucket: string, path: string, file: File | Blob): Promise<{ success: boolean; url?: string; error?: string }> {
+    try {
+      const { error: uploadError } = await supabase.storage
+        .from(bucket)
+        .upload(path, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from(bucket)
+        .getPublicUrl(path);
+
+      return { success: true, url: publicUrl };
+    } catch (err: any) {
+      console.warn('[Supabase] Storage upload notice:', err.message);
+      return { success: false, error: err.message || 'Failed to upload file to Supabase storage.' };
+    }
+  }
 }
 
 export const supabaseService = new SupabaseService();

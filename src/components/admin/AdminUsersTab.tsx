@@ -331,7 +331,7 @@ export const AdminUsersTab: React.FC = () => {
 
   const handleQuickVerify = async (u: UserProfile) => {
     if (window.confirm(`Verify KYC status for ${u.firstName} ${u.lastName}?`)) {
-      await adminVerifyUserKyc(u.id);
+      await adminVerifyUserKyc(u.id, 'verified');
     }
   };
 

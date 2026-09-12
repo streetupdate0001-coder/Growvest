@@ -648,38 +648,85 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   useEffect(() => {
-    // Check if user is logged in on refresh
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        supabase.from('profiles').select('*').eq('id', session.user.id).single().then(({ data: profile }) => {
-          const mapped = mapSupabaseUserToProfile(session.user, profile);
-          setUser(mapped);
-          localStorage.setItem('greeneza_auth_user', JSON.stringify(mapped));
-          loadUserData(session.user.id);
-          if (mapped.role === 'admin') loadAdminData();
-        });
+    let isMounted = true;
+
+    // Safely check if user is logged in on refresh
+    const initAuth = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user && isMounted) {
+          try {
+            const { data: profile } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
+            if (isMounted) {
+              const mapped = mapSupabaseUserToProfile(session.user, profile);
+              setUser(mapped);
+              try {
+                localStorage.setItem('greeneza_auth_user', JSON.stringify(mapped));
+              } catch (_e) {}
+              loadUserData(session.user.id);
+              if (mapped.role === 'admin') loadAdminData();
+            }
+          } catch (_profileErr) {
+            if (isMounted) {
+              const mapped = mapSupabaseUserToProfile(session.user);
+              setUser(mapped);
+            }
+          }
+        }
+      } catch (authErr) {
+        console.warn('[AuthContext] getSession notice:', authErr);
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
       }
-      setLoading(false);
-    });
+    };
+
+    initAuth();
 
     // Listen for login/logout
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) {
-        supabase.from('profiles').select('*').eq('id', session.user.id).single().then(({ data: profile }) => {
-          const mapped = mapSupabaseUserToProfile(session.user, profile);
-          setUser(mapped);
-          localStorage.setItem('greeneza_auth_user', JSON.stringify(mapped));
-          loadUserData(session.user.id);
-          if (mapped.role === 'admin') loadAdminData();
-        });
-      } else {
-        setUser(null);
-        setWallet(null);
-        localStorage.removeItem('greeneza_auth_user');
-      }
-    });
+    let subscription: { unsubscribe: () => void } | null = null;
+    try {
+      const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+        if (!isMounted) return;
+        if (session?.user) {
+          (async () => {
+            try {
+              const { data: profile } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
+              if (!isMounted) return;
+              const mapped = mapSupabaseUserToProfile(session.user, profile);
+              setUser(mapped);
+              try {
+                localStorage.setItem('greeneza_auth_user', JSON.stringify(mapped));
+              } catch (_e) {}
+              loadUserData(session.user.id);
+              if (mapped.role === 'admin') loadAdminData();
+            } catch (_err) {
+              if (isMounted) {
+                const mapped = mapSupabaseUserToProfile(session.user);
+                setUser(mapped);
+              }
+            }
+          })();
+        } else {
+          setUser(null);
+          setWallet(null);
+          try {
+            localStorage.removeItem('greeneza_auth_user');
+          } catch (_e) {}
+        }
+      });
+      subscription = data.subscription;
+    } catch (subErr) {
+      console.warn('[AuthContext] onAuthStateChange notice:', subErr);
+    }
 
-    return () => subscription.unsubscribe();
+    return () => {
+      isMounted = false;
+      if (subscription?.unsubscribe) {
+        subscription.unsubscribe();
+      }
+    };
   }, []);
 
   // 1. SIGN UP - Creates Auth user AND profile row
@@ -1788,7 +1835,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     },
     adminToggleInvestmentPlanStatus: async (id) => {
       setInvestmentPlans(prev => {
-        const next = prev.map(p => p.id === id ? { ...p, status: p.status === 'active' ? 'paused' : 'active' } : p);
+        const next = prev.map(p => p.id === id ? { ...p, status: (p.status === 'active' ? 'paused' : 'active') as 'active' | 'paused' } : p);
         try { localStorage.setItem('growvest_investment_plans', JSON.stringify(next)); } catch (_e) {}
         return next;
       });

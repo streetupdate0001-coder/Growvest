@@ -2,7 +2,8 @@ import React from 'react';
 import { UserProfile } from '../../types';
 
 interface UserAvatarProps {
-  user: UserProfile | null;
+  user?: UserProfile | null;
+  name?: string;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   showStatus?: boolean;
   showRoleBadge?: boolean;
@@ -11,12 +12,18 @@ interface UserAvatarProps {
 
 export const UserAvatar: React.FC<UserAvatarProps> = ({
   user,
+  name,
   size = 'md',
   showStatus = false,
   showRoleBadge = false,
   className = ''
 }) => {
   const getInitials = () => {
+    if (name) {
+      const parts = name.trim().split(/\s+/);
+      if (parts.length >= 2) return `${parts[0].charAt(0).toUpperCase()}${parts[1].charAt(0).toUpperCase()}`;
+      return parts[0].substring(0, 2).toUpperCase();
+    }
     if (!user) return 'GZ';
     const first = user.firstName ? user.firstName.charAt(0).toUpperCase() : '';
     const last = user.lastName ? user.lastName.charAt(0).toUpperCase() : '';

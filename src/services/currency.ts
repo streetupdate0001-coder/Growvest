@@ -21,10 +21,11 @@ export const CURRENCY_CONFIGS: Record<CurrencyCode, CurrencyConfig> = {
 
 export function formatCurrency(
   amountInUsd: number,
-  targetCurrency: CurrencyCode = 'USD',
+  targetCurrency: CurrencyCode | string = 'USD',
   showSymbol: boolean = true
 ): string {
-  const config = CURRENCY_CONFIGS[targetCurrency] || CURRENCY_CONFIGS.USD;
+  const code = (targetCurrency as CurrencyCode) || 'USD';
+  const config = CURRENCY_CONFIGS[code] || CURRENCY_CONFIGS.USD;
   const convertedAmount = amountInUsd * config.rateToUsd;
 
   try {

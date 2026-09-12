@@ -37,7 +37,7 @@ export const LegalView: React.FC<LegalViewProps> = ({ initialTab = 'privacy', on
             <span>Return</span>
           </button>
           <div className="h-4 w-px bg-slate-800" />
-          <BrandLogo variant="light" size="sm" />
+          <BrandLogo variant="full" themeMode="light" size="sm" />
         </div>
 
         {/* Tab Toggle */}

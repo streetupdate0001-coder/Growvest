@@ -1,7 +1,10 @@
+import { supabase } from '../lib/supabase';
+
 /**
  * GROWVEST Persistent Storage & Database Manager
  * Handles local and browser database persistence for all user transactions,
  * portfolio models, deposits, withdrawals, KYC submissions, and client reviews.
+ * Also synchronizes records seamlessly with Supabase backend tables.
  */
 
 export interface DbUserRecord {
@@ -88,7 +91,37 @@ export class GrowvestDatabase {
     } else {
       list.unshift(tx);
     }
-    return this.safeSet(DB_KEYS.TRANSACTIONS, list);
+    const saved = this.safeSet(DB_KEYS.TRANSACTIONS, list);
+
+    // Asynchronously replicate to Supabase for cloud persistence
+    if (tx.userId && tx.userId !== 'usr_guest') {
+      (async () => {
+        try {
+          if (tx.type === 'deposit') {
+            await supabase.from('deposits').upsert({
+              id: tx.id.length > 30 ? tx.id : undefined,
+              user_id: tx.userId,
+              amount: tx.amountUsd || tx.amount,
+              method: tx.asset,
+              status: tx.status === 'completed' ? 'approved' : tx.status === 'failed' ? 'rejected' : 'pending',
+              proof_url: tx.proofImageUrl || ''
+            });
+          } else if (tx.type === 'withdrawal') {
+            await supabase.from('withdrawals').upsert({
+              id: tx.id.length > 30 ? tx.id : undefined,
+              user_id: tx.userId,
+              amount: tx.amountUsd || tx.amount,
+              wallet_address: tx.txHash || 'Standard Withdrawal Address',
+              status: tx.status === 'completed' ? 'approved' : tx.status === 'failed' ? 'rejected' : 'pending'
+            });
+          }
+        } catch (_e) {
+          // Fallback gracefully
+        }
+      })();
+    }
+
+    return saved;
   }
 
   // Reviews

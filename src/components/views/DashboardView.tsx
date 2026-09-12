@@ -617,14 +617,15 @@ export const DashboardView: React.FC = () => {
         ) : (
           <div className="divide-y divide-white/[0.05]">
             {userTransactions.slice(0, 5).map(tx => {
-              const isPos = tx.type === 'deposit' || tx.type === 'transfer_in';
-              const typeTitle = tx.type === 'deposit'
+              const txType = tx.type as string;
+              const isPos = txType === 'deposit' || txType === 'transfer_in' || txType === 'bonus' || txType === 'yield';
+              const typeTitle = txType === 'deposit'
                 ? 'Deposit Received'
-                : tx.type === 'withdrawal'
+                : txType === 'withdrawal'
                 ? 'Withdrawal Payout'
-                : tx.type === 'transfer'
+                : txType === 'transfer'
                 ? 'Transfer Sent'
-                : tx.type === 'card_purchase'
+                : txType === 'card_purchase'
                 ? 'Card Payment'
                 : 'Account Transaction';
               const dateSubtitle = new Date(tx.timestamp).toLocaleDateString([], { month: 'short', day: 'numeric' });

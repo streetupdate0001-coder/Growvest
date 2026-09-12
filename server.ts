@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 
+dotenv.config({ path: '.env.local' });
 dotenv.config();
 
 const app = express();
@@ -178,7 +179,7 @@ const INDICATIVE_RATES = {
 app.get("/api/health", (_req, res) => {
   res.json({
     status: "ok",
-    service: "GREENEZA Financial Platform",
+    service: "Growvest Investment Platform",
     timestamp: new Date().toISOString(),
     version: "2.4.0-fintech"
   });
@@ -257,7 +258,7 @@ app.get("/api/markets", async (_req, res) => {
 app.get("/api/support/status", (_req, res) => {
   res.json({
     humanAgentOnline: false,
-    statusMessage: "Human support is currently offline for scheduled review. You may open a secure support ticket or consult the GREENEZA AI Assistant 24/7.",
+    statusMessage: "Human support is currently offline for scheduled review. You may open a secure support ticket or consult the Growvest AI Assistant 24/7.",
     operatingHours: "Monday - Friday, 08:00 - 20:00 UTC",
     averageResponseTime: "Under 2 business hours"
   });
@@ -367,13 +368,13 @@ app.post("/api/ai/chat", async (req, res) => {
     const ai = getGeminiClient();
 
     if (!ai) {
-      const fallbackReply = `I am the **GREENEZA AI Financial Assistant**.
+      const fallbackReply = `I am the **Growvest AI Financial Assistant**.
 
 I am here to provide platform navigation assistance, explain financial terminology, clarify transaction workflows (Pending, Processing, Completed), and explain portfolio risk disclosures.
 
 *Note: I am an automated AI assistant, not a certified financial adviser. I do not provide personalized financial advice or guarantee investment returns. All portfolio plans are subject to market volatility.*
 
-How can I help you navigate your GREENEZA dashboard or security settings today?`;
+How can I help you navigate your Growvest dashboard or security settings today?`;
 
       return res.json({
         success: true,
@@ -383,38 +384,37 @@ How can I help you navigate your GREENEZA dashboard or security settings today?`
       });
     }
 
-    const systemInstruction = `You are the official "GREENEZA AI Intelligence & Support Assistant" for GREENEZA, an institutional-grade financial technology and wealth management ecosystem.
+    const systemInstruction = `You are the official "Growvest AI Intelligence & Support Assistant" for Growvest, an institutional-grade financial technology and wealth management ecosystem.
 
 PLATFORM OPERATIONAL KNOWLEDGE & WORKFLOWS:
-1. What GREENEZA Does:
-   - GREENEZA is a premier digital asset and fiat portfolio ecosystem (UK Company #14892011, compliant with international AML/KYC standards).
+1. What Growvest Does:
+   - Growvest is a premier digital asset and fiat portfolio ecosystem (UK Company #14892011, compliant with international AML/KYC standards).
    - Core Services: Segregated Institutional Cold-Storage Vaults, Quantitative Yield & Growth Strategies, Instant 0% Fee Internal P2P Transfers, High-Liquidity Crypto-to-Fiat On/Off Ramping, Real-Time Market Analytics, and Multi-Tier KYC Verification.
    - User Accounts: Multi-currency balance tracking (USD, EUR, GBP, BTC, ETH, USDT, SOL), real-time fiat conversion engine, transaction history ledger with cryptographic reference hashing.
 
 2. Financial Operations & Workflows:
-   - Deposits: Users receive dedicated inbound multi-chain vault addresses (USDT TRC20, BTC Native SegWit, ETH ERC20, SOL, USDC) or bank wire details. Deposited funds undergo automated compliance screening and immediate ledger credit upon validation.
-   - Withdrawals: Protected by compulsory 2FA and cold enclave authorization. Outbound funds are disbursed in automated daily batches with zero hidden settlement fees.
-   - Internal Transfers: Registered users can execute instant zero-fee transfers using recipient's Account ID or registered Email address.
-   - Investment Plans: Automated portfolios spanning Conservative (Sovereign & Fixed Income), Balanced Growth (Equities + High-Cap Digital Assets), and Quantitative Yield with quarterly rebalancing and daily ROI accrual.
+   - Deposits & Investments: Users select an investment plan (Bronze 5-Day 20%, Silver 5-Day 35%, Gold 5-Day 50%) or inbound multi-chain vault addresses (USDT TRC20, BTC Native SegWit, ETH ERC20, SOL, USDC) or bank wire details. Deposited funds undergo automated compliance screening and immediate ledger credit upon validation.
+   - Withdrawals: Protected by compulsory 2FA and cold enclave authorization. Outbound funds are disbursed in automated daily batches with zero hidden settlement fees upon admin approval.
+   - Investment Plans: 5-day cycle plans with fixed projected yield and automated maturation.
    - KYC Verification: Tier 1 (Standard limits) to Tier 2 (Unlimited institutional limits upon verified Government ID & Proof of Address).
    - Administrative Governance: Dual-key Level 4 clearance console for treasury monitoring, KYC review, custom wallet routing, and cryptographic audit logs.
 
 3. CLIENT FOLLOW-UP PROTOCOL (FOR UNLISTED QUESTIONS OR BESPOKE CLIENT INQUIRIES):
    - When a client or team member asks an unlisted, custom, or bespoke operational question (such as bespoke institutional OTC limits, corporate entity onboarding, inheritance/estate transfer, audited tax statements, custom staking terms, or direct API integration):
-     a. Clearly explain GREENEZA's standard operational framework and relevant platform capabilities.
+     a. Clearly explain Growvest's standard operational framework and relevant platform capabilities.
      b. Guide the user with the 4-Step Client Follow-up Protocol:
         Step 1: Record the client's registered account email and unique Account ID.
         Step 2: Advise the client to initiate a Priority Support Ticket in the Support Center (or click the 24/7 Smartsupp Live Chat widget).
         Step 3: Escalate complex inquiries directly to the Senior Compliance & Institutional Desk:
-                • General Support: support@greeneza.com
-                • Compliance & Institutional: compliance@greeneza.com
-                • Direct Executive Desk (UK): +44 7456 091823
+                • General Support: support@growvest.com
+                • Compliance & Institutional: compliance@growvest.com
+                • Direct Executive Telegram Desk (UK): +44 79 0041 3315
         Step 4: Provide an SLA guarantee of under 2 business hours for senior officer review.
 
 CORE ETHICAL & COMPLIANCE RULES:
 - Always be polite, professional, concise, and structured.
 - Never guarantee speculative profits or promise impossible financial returns.
-- Include actionable platform navigation directions (e.g. Deposit modal, KYC tab, Security center, Support ticket).
+- Include actionable platform navigation directions (e.g. Invest modal, Withdraw view, KYC tab, Security center, Support ticket).
 ${userContext ? `User Context: ${JSON.stringify(userContext)}` : ''}`;
 
     const promptToSend = `${historyText ? `${historyText}\n\n` : ''}User: ${userQuery}\nAssistant:`;
@@ -428,7 +428,7 @@ ${userContext ? `User Context: ${JSON.stringify(userContext)}` : ''}`;
       }
     });
 
-    const reply = response.text || "I am here to assist you with GREENEZA platform features, security configurations, and market navigation.";
+    const reply = response.text || "I am here to assist you with Growvest platform features, security configurations, and market navigation.";
 
     return res.json({
       success: true,
@@ -438,7 +438,7 @@ ${userContext ? `User Context: ${JSON.stringify(userContext)}` : ''}`;
     });
   } catch (error: any) {
     console.error("AI Assistant error:", error);
-    const fallbackText = "The GREENEZA AI Assistant is momentarily recalibrating. For immediate assistance with deposits, withdrawals, or security, please consult the Support tab.";
+    const fallbackText = "The Growvest AI Assistant is momentarily recalibrating. For immediate assistance with deposits, withdrawals, or security, please consult the Support tab.";
     return res.json({
       success: false,
       reply: fallbackText,
@@ -465,7 +465,7 @@ async function startServer() {
   }
 
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`GREENEZA Fintech Server running at http://0.0.0.0:${PORT}`);
+    console.log(`Growvest Fintech Server running at http://0.0.0.0:${PORT}`);
   });
 }
 

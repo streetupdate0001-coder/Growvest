@@ -15,7 +15,7 @@ interface MarketSparklineProps {
   change24h: number;
   currency?: CurrencyCode | string;
   height?: number;
-  width?: number | string;
+  width?: number | `${number}%`;
   showGradient?: boolean;
   showTooltip?: boolean;
   idPrefix?: string;

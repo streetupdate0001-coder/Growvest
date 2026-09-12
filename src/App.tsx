@@ -20,6 +20,17 @@ import { ShieldAlert } from 'lucide-react';
 // Dedicated Admin Layout
 import { AdminLayout } from './components/layout/AdminLayout';
 
+// App Router Pages (/app)
+import LoginPage from '../app/login/page';
+import AdminPage from '../app/admin/page';
+import DashboardPage from '../app/dashboard/page';
+import InvestPage from '../app/invest/page';
+import WithdrawPage from '../app/withdraw/page';
+import HistoryPage from '../app/history/page';
+import CardsPage from '../app/cards/page';
+import PaymentsPage from '../app/payments/page';
+import MorePage from '../app/more/page';
+
 // Authenticated User Application Shell & Views
 import { UserAppHeader } from './components/layout/UserAppHeader';
 import { Sidebar } from './components/layout/Sidebar';
@@ -127,10 +138,142 @@ const MainAppContent: React.FC = () => {
       hash.startsWith('#admin') ||
       hash.startsWith('#/admin') ||
       path.endsWith('/admin') ||
+      path === '/admin' ||
+      path.endsWith('/app/admin') ||
       search.get('page') === 'admin' ||
       search.get('view') === 'admin'
     );
   });
+
+  // Dedicated Dashboard Route
+  const [isDashboardHashRoute, setIsDashboardHashRoute] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    const hash = (window.location.hash || '').toLowerCase();
+    const path = (window.location.pathname || '').toLowerCase();
+    const search = new URLSearchParams(window.location.search);
+    return (
+      hash.startsWith('#dashboard') ||
+      hash.startsWith('#/dashboard') ||
+      path.endsWith('/dashboard') ||
+      path === '/dashboard' ||
+      path.endsWith('/app/dashboard') ||
+      search.get('page') === 'dashboard' ||
+      search.get('view') === 'dashboard'
+    );
+  });
+
+  // Dedicated Invest Route (/app/invest, /invest, #invest)
+  const [isInvestHashRoute, setIsInvestHashRoute] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    const hash = (window.location.hash || '').toLowerCase();
+    const path = (window.location.pathname || '').toLowerCase();
+    const search = new URLSearchParams(window.location.search);
+    return (
+      hash.startsWith('#invest') ||
+      hash.startsWith('#/invest') ||
+      path.endsWith('/invest') ||
+      path === '/invest' ||
+      path.endsWith('/app/invest') ||
+      search.get('page') === 'invest' ||
+      search.get('view') === 'invest'
+    );
+  });
+
+  // Dedicated Withdraw Route (/app/withdraw, /withdraw, #withdraw)
+  const [isWithdrawHashRoute, setIsWithdrawHashRoute] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    const hash = (window.location.hash || '').toLowerCase();
+    const path = (window.location.pathname || '').toLowerCase();
+    const search = new URLSearchParams(window.location.search);
+    return (
+      hash.startsWith('#withdraw') ||
+      hash.startsWith('#/withdraw') ||
+      path.endsWith('/withdraw') ||
+      path === '/withdraw' ||
+      path.endsWith('/app/withdraw') ||
+      search.get('page') === 'withdraw' ||
+      search.get('view') === 'withdraw'
+    );
+  });
+
+  // Dedicated History Route (/app/history, /history, #history)
+  const [isHistoryHashRoute, setIsHistoryHashRoute] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    const hash = (window.location.hash || '').toLowerCase();
+    const path = (window.location.pathname || '').toLowerCase();
+    const search = new URLSearchParams(window.location.search);
+    return (
+      hash.startsWith('#history') ||
+      hash.startsWith('#/history') ||
+      path.endsWith('/history') ||
+      path === '/history' ||
+      path.endsWith('/app/history') ||
+      search.get('page') === 'history' ||
+      search.get('view') === 'history'
+    );
+  });
+
+  // Dedicated Cards Route (/app/cards, /cards, #cards)
+  const [isCardsHashRoute, setIsCardsHashRoute] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    const hash = (window.location.hash || '').toLowerCase();
+    const path = (window.location.pathname || '').toLowerCase();
+    const search = new URLSearchParams(window.location.search);
+    return (
+      hash.startsWith('#cards') ||
+      hash.startsWith('#/cards') ||
+      path.endsWith('/cards') ||
+      path === '/cards' ||
+      path.endsWith('/app/cards') ||
+      search.get('page') === 'cards' ||
+      search.get('view') === 'cards'
+    );
+  });
+
+  // Dedicated Payments Route (/app/payments, /payments, #payments)
+  const [isPaymentsHashRoute, setIsPaymentsHashRoute] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    const hash = (window.location.hash || '').toLowerCase();
+    const path = (window.location.pathname || '').toLowerCase();
+    const search = new URLSearchParams(window.location.search);
+    return (
+      hash.startsWith('#payments') ||
+      hash.startsWith('#/payments') ||
+      path.endsWith('/payments') ||
+      path === '/payments' ||
+      path.endsWith('/app/payments') ||
+      search.get('page') === 'payments' ||
+      search.get('view') === 'payments'
+    );
+  });
+
+  // Dedicated More Route (/app/more, /more, #more)
+  const [isMoreHashRoute, setIsMoreHashRoute] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    const hash = (window.location.hash || '').toLowerCase();
+    const path = (window.location.pathname || '').toLowerCase();
+    const search = new URLSearchParams(window.location.search);
+    return (
+      hash.startsWith('#more') ||
+      hash.startsWith('#/more') ||
+      path.endsWith('/more') ||
+      path === '/more' ||
+      path.endsWith('/app/more') ||
+      search.get('page') === 'more' ||
+      search.get('view') === 'more'
+    );
+  });
+
+  // Unified Navigator
+  const handleNavigate = (destination: string) => {
+    if (typeof window === 'undefined') return;
+    if (destination.startsWith('/')) {
+      window.history.pushState(null, '', destination);
+    } else {
+      window.location.hash = destination;
+    }
+    window.dispatchEvent(new Event('popstate'));
+  };
 
   // Legal Route (/privacy, /terms, #privacy, #terms)
   const [legalRoute, setLegalRoute] = useState<'privacy' | 'terms' | null>(() => {
@@ -187,8 +330,73 @@ const MainAppContent: React.FC = () => {
         hash.startsWith('#admin') ||
         hash.startsWith('#/admin') ||
         path.endsWith('/admin') ||
+        path === '/admin' ||
+        path.endsWith('/app/admin') ||
         search.get('page') === 'admin' ||
         search.get('view') === 'admin';
+
+      const isDash =
+        hash.startsWith('#dashboard') ||
+        hash.startsWith('#/dashboard') ||
+        path.endsWith('/dashboard') ||
+        path === '/dashboard' ||
+        path.endsWith('/app/dashboard') ||
+        search.get('page') === 'dashboard' ||
+        search.get('view') === 'dashboard';
+
+      const isInvest =
+        hash.startsWith('#invest') ||
+        hash.startsWith('#/invest') ||
+        path.endsWith('/invest') ||
+        path === '/invest' ||
+        path.endsWith('/app/invest') ||
+        search.get('page') === 'invest' ||
+        search.get('view') === 'invest';
+
+      const isWithdraw =
+        hash.startsWith('#withdraw') ||
+        hash.startsWith('#/withdraw') ||
+        path.endsWith('/withdraw') ||
+        path === '/withdraw' ||
+        path.endsWith('/app/withdraw') ||
+        search.get('page') === 'withdraw' ||
+        search.get('view') === 'withdraw';
+
+      const isHistory =
+        hash.startsWith('#history') ||
+        hash.startsWith('#/history') ||
+        path.endsWith('/history') ||
+        path === '/history' ||
+        path.endsWith('/app/history') ||
+        search.get('page') === 'history' ||
+        search.get('view') === 'history';
+
+      const isCards =
+        hash.startsWith('#cards') ||
+        hash.startsWith('#/cards') ||
+        path.endsWith('/cards') ||
+        path === '/cards' ||
+        path.endsWith('/app/cards') ||
+        search.get('page') === 'cards' ||
+        search.get('view') === 'cards';
+
+      const isPayments =
+        hash.startsWith('#payments') ||
+        hash.startsWith('#/payments') ||
+        path.endsWith('/payments') ||
+        path === '/payments' ||
+        path.endsWith('/app/payments') ||
+        search.get('page') === 'payments' ||
+        search.get('view') === 'payments';
+
+      const isMore =
+        hash.startsWith('#more') ||
+        hash.startsWith('#/more') ||
+        path.endsWith('/more') ||
+        path === '/more' ||
+        path.endsWith('/app/more') ||
+        search.get('page') === 'more' ||
+        search.get('view') === 'more';
 
       if (hash.includes('privacy') || path.endsWith('/privacy')) {
         setLegalRoute('privacy');
@@ -200,6 +408,13 @@ const MainAppContent: React.FC = () => {
 
       setIsLoginHashRoute(isLogin);
       setIsAdminHashRoute(isAdminRoute);
+      setIsDashboardHashRoute(isDash);
+      setIsInvestHashRoute(isInvest);
+      setIsWithdrawHashRoute(isWithdraw);
+      setIsHistoryHashRoute(isHistory);
+      setIsCardsHashRoute(isCards);
+      setIsPaymentsHashRoute(isPayments);
+      setIsMoreHashRoute(isMore);
     };
 
     window.addEventListener('hashchange', handleRouteChange);
@@ -211,11 +426,8 @@ const MainAppContent: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Branded initial boot
-    const timer = setTimeout(() => {
-      setInitialLoading(false);
-    }, 450);
-    return () => clearTimeout(timer);
+    // Ultra-fast boot: render UI immediately with zero artificial lag
+    setInitialLoading(false);
   }, []);
 
   // When admin logs in, switch active tab to admin
@@ -270,44 +482,75 @@ const MainAppContent: React.FC = () => {
     );
   }
 
-  // 2. STANDALONE DIRECT CLIENT SIGN-IN ROUTE GATEWAY (/#login, #/signin, /login, etc.)
-  // When accessed via direct link, user enters directly without seeing public front page
+  // 1. DEDICATED ADMIN ROUTE GATEWAY (/admin, #admin, /app/admin)
+  // Protected with middleware checking role === 'admin' from profiles table
+  if (isAdminHashRoute) {
+    return (
+      <AdminPage onNavigate={handleNavigate} />
+    );
+  }
+
+  // 2. STANDALONE CLIENT SIGN-IN ROUTE GATEWAY (/login, #login, /app/login)
+  // Authenticates with Supabase auth and redirects to /dashboard
   if (isLoginHashRoute && !isAuthenticated) {
     return (
-      <StandaloneLoginView
-        onBackToPublic={() => {
-          setIsLoginHashRoute(false);
-          setPublicPage('home');
-          window.location.hash = '';
-          if (window.history.pushState) {
-            window.history.pushState(null, '', window.location.pathname);
-          }
-        }}
+      <LoginPage
+        onNavigate={handleNavigate}
         onSuccess={() => {
           setIsLoginHashRoute(false);
-          setActiveTab('dashboard');
+          setIsDashboardHashRoute(true);
+          handleNavigate('/dashboard');
         }}
       />
     );
   }
 
-  // 3. DIRECT ADMIN ROUTE GATEWAY (For unauthenticated visitors requesting #admin or /admin)
-  if (isAdminHashRoute && !isAuthenticated) {
+  // 3. DEDICATED DASHBOARD ROUTE (/dashboard, #dashboard, /app/dashboard)
+  if (isDashboardHashRoute) {
     return (
-      <AdminLoginView
-        onBackToPublic={() => {
-          setIsAdminHashRoute(false);
-          setPublicPage('home');
-          window.location.hash = '';
-          if (window.history.pushState) {
-            window.history.pushState(null, '', window.location.pathname);
-          }
-        }}
-        onSuccess={() => {
-          setIsAdminHashRoute(false);
-          setActiveTab('admin');
-        }}
-      />
+      <DashboardPage onNavigate={handleNavigate} />
+    );
+  }
+
+  // 4. DEDICATED INVEST ROUTE (/invest, #invest, /app/invest)
+  if (isInvestHashRoute) {
+    return (
+      <InvestPage onNavigate={handleNavigate} />
+    );
+  }
+
+  // 5. DEDICATED WITHDRAW ROUTE (/withdraw, #withdraw, /app/withdraw)
+  if (isWithdrawHashRoute) {
+    return (
+      <WithdrawPage onNavigate={handleNavigate} />
+    );
+  }
+
+  // 6. DEDICATED HISTORY ROUTE (/history, #history, /app/history)
+  if (isHistoryHashRoute) {
+    return (
+      <HistoryPage onNavigate={handleNavigate} />
+    );
+  }
+
+  // 7. DEDICATED CARDS ROUTE (/cards, #cards, /app/cards)
+  if (isCardsHashRoute) {
+    return (
+      <CardsPage onNavigate={handleNavigate} />
+    );
+  }
+
+  // 8. DEDICATED PAYMENTS ROUTE (/payments, #payments, /app/payments)
+  if (isPaymentsHashRoute) {
+    return (
+      <PaymentsPage onNavigate={handleNavigate} />
+    );
+  }
+
+  // 9. DEDICATED MORE ROUTE (/more, #more, /app/more)
+  if (isMoreHashRoute) {
+    return (
+      <MorePage onNavigate={handleNavigate} />
     );
   }
 
@@ -382,9 +625,12 @@ const MainAppContent: React.FC = () => {
       case 'portfolio':
         return <PortfolioView />;
       case 'invest':
-        return <InvestView />;
+        return <InvestPage onNavigate={handleNavigate} />;
+      case 'withdraw':
+        return <WithdrawPage onNavigate={handleNavigate} />;
       case 'activity':
-        return <ActivityView />;
+      case 'history':
+        return <HistoryPage onNavigate={handleNavigate} />;
       case 'security':
         return <SecurityView />;
       case 'profile':

@@ -139,9 +139,13 @@ export const StandaloneLoginView: React.FC<StandaloneLoginViewProps> = ({
     const res = await register({
       firstName: firstName.trim(),
       lastName: lastName.trim(),
+      username: regEmail.trim().split('@')[0] || 'client',
       email: regEmail.trim(),
       password: regPassword,
-      country: regCountry
+      country: regCountry,
+      phoneCountryCode: '+1',
+      phoneNumber: '',
+      marketingConsent: false
     });
     setIsSubmitting(false);
 

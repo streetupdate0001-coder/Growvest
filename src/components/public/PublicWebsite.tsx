@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react';
 import { PublicNavbar } from './PublicNavbar';
 import { PublicHero } from './PublicHero';
+import { BrandSliderSection } from './BrandSliderSection';
+import { SecuritySimplicityGrowthSection } from './SecuritySimplicityGrowthSection';
+import { RegulatedInfrastructureSection } from './RegulatedInfrastructureSection';
+import { InstitutionalTrustSection } from './InstitutionalTrustSection';
 import { GlobalPresenceHub } from './GlobalPresenceHub';
 import { AntiScamSecurityShield } from '../security/AntiScamSecurityShield';
 import { TrustAndReviewsSection } from './TrustAndReviewsSection';
-import { TrustpilotReviewCard } from './TrustpilotReviewCard';
 import { VerifiedSecurityPartners } from './VerifiedSecurityPartners';
 import { InteractiveYieldCalculator } from './InteractiveYieldCalculator';
 import { PublicMarketOverview } from './PublicMarketOverview';
@@ -17,11 +20,9 @@ import { PublicContactSection } from './PublicContactSection';
 import { TransparencySection } from './TransparencySection';
 import { CertificateSection } from './CertificateSection';
 import { CertificateModal } from './CertificateModal';
-import { BrandSliderSection } from './BrandSliderSection';
-import { TestimonialCarouselSection } from './TestimonialCarouselSection';
 import { PublicFooter } from './PublicFooter';
 import { useApp } from '../../context/AppContext';
-import { ArrowRight, ShieldCheck, TrendingUp, Sliders, CheckCircle2, Lock, Star, ChevronRight, Globe2 } from 'lucide-react';
+import { ArrowRight, ShieldCheck, TrendingUp, Lock, Sparkles } from 'lucide-react';
 
 export const PublicWebsite: React.FC = () => {
   const {
@@ -29,7 +30,6 @@ export const PublicWebsite: React.FC = () => {
     setPublicPage,
     isCertificateModalOpen,
     setIsCertificateModalOpen,
-    setIsScamAdviserModalOpen,
     setAuthModalOpen,
     setAuthModalMode
   } = useApp();
@@ -44,16 +44,16 @@ export const PublicWebsite: React.FC = () => {
       case 'markets':
         return (
           <div className="space-y-8 animate-fade-in">
-            <div className="py-12 bg-slate-100 dark:bg-slate-900/60 border-b border-slate-200 dark:border-slate-800">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-xs font-mono font-bold uppercase mb-3">
+            <div className="py-12 bg-slate-100 dark:bg-[#031911] border-b border-slate-200 dark:border-emerald-950/70">
+              <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-xs font-mono font-bold uppercase mb-3 border border-emerald-500/20">
                   <TrendingUp className="w-3.5 h-3.5" />
-                  Direct Price Discovery
+                  <span>Direct Price Discovery</span>
                 </div>
                 <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">
                   Live Global Markets & Price Feeds
                 </h1>
-                <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">
+                <p className="text-sm text-slate-600 dark:text-slate-300 mt-2">
                   Institutional spot quotes, crypto assets, commodities, and fiat pairs aggregated with zero markups.
                 </p>
               </div>
@@ -65,7 +65,7 @@ export const PublicWebsite: React.FC = () => {
       case 'reviews':
         return (
           <div className="space-y-0 animate-fade-in">
-            <TestimonialCarouselSection />
+            <InstitutionalTrustSection />
             <TrustAndReviewsSection />
           </div>
         );
@@ -74,7 +74,7 @@ export const PublicWebsite: React.FC = () => {
         return (
           <div className="space-y-0 animate-fade-in">
             <PublicAboutSection />
-            <GlobalPresenceHub />
+            <RegulatedInfrastructureSection />
             <CertificateSection />
           </div>
         );
@@ -83,8 +83,8 @@ export const PublicWebsite: React.FC = () => {
         return (
           <div className="space-y-0 animate-fade-in">
             <PublicHowItWorks />
-            <div className="py-12 bg-white dark:bg-slate-950 border-t border-b border-slate-200 dark:border-slate-800/80">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="py-12 bg-white dark:bg-[#03150e] border-t border-b border-slate-200 dark:border-emerald-950/70">
+              <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
                 <InteractiveYieldCalculator />
               </div>
             </div>
@@ -94,7 +94,7 @@ export const PublicWebsite: React.FC = () => {
 
       case 'security':
         return (
-          <div className="space-y-8 py-10 animate-fade-in max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="space-y-8 py-10 animate-fade-in max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
             <AntiScamSecurityShield />
             <BankLevelSecuritySection />
             <PublicSecuritySection />
@@ -114,7 +114,7 @@ export const PublicWebsite: React.FC = () => {
         return (
           <div className="space-y-0 animate-fade-in">
             <PublicContactSection />
-            <GlobalPresenceHub />
+            <RegulatedInfrastructureSection />
           </div>
         );
 
@@ -122,7 +122,7 @@ export const PublicWebsite: React.FC = () => {
         return (
           <div className="space-y-0 animate-fade-in">
             <TransparencySection />
-            <GlobalPresenceHub />
+            <RegulatedInfrastructureSection />
             <CertificateSection />
           </div>
         );
@@ -131,136 +131,70 @@ export const PublicWebsite: React.FC = () => {
       default:
         return (
           <div className="animate-fade-in space-y-0">
-            {/* 1. Sleek Hero with Institutional Ticker */}
+            {/* 1. HERO SECTION: Full-Width with 3-photo image slider, dark gradient overlay, Stripe/BlackRock layout */}
             <PublicHero />
 
-            {/* 2. Institutional Brand & Liquidity Swiper Slider */}
+            {/* Institutional Brand & Liquidity Tier-1 Feed Slider */}
             <BrandSliderSection />
 
-            {/* 3. Global Presence & Regulated Hubs */}
-            <GlobalPresenceHub />
+            {/* 2. SECTION: "Built for Security, Simplicity & Real Growth" with 3 cards */}
+            <SecuritySimplicityGrowthSection />
 
-            {/* 4. Core Architecture Pillars */}
-            <section className="py-16 sm:py-20 bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800/80">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-                    Platform Architecture
-                  </span>
-                  <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
-                    Built for Security, Simplicity & Real Growth
-                  </h2>
-                  <p className="text-sm text-slate-600 dark:text-slate-300">
-                    Experience segregated institutional custody and algorithmic capital strategies.
-                  </p>
+            {/* 3. SECTION: "Regulated Infrastructure Across London, Europe, Zurich & New York" */}
+            <RegulatedInfrastructureSection />
+
+            {/* 4. SECTION: "Institutional Trust in Action" with testimonials */}
+            <InstitutionalTrustSection />
+
+            {/* 5. Institutional Call to Action Banner (BlackRock + Stripe Aesthetic) */}
+            <section className="py-20 bg-[#02140e] text-white relative overflow-hidden border-t border-emerald-950/80">
+              <div className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:20px_20px]" />
+              <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 text-center relative z-10 space-y-6">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold uppercase tracking-wider">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Next-Generation Wealth OS</span>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-                  {/* Pillar 1: Markets */}
-                  <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800/80 flex flex-col justify-between hover:border-emerald-500/50 transition-all group">
-                    <div className="space-y-4">
-                      <div className="w-12 h-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-                        <TrendingUp className="w-6 h-6" />
-                      </div>
-                      <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-                        Live Global Markets
-                      </h3>
-                      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                        Real-time price discovery across cryptocurrencies, major forex pairs, commodities, and tokenized US Treasuries.
-                      </p>
-                    </div>
-                    <button
-                      onClick={() => setPublicPage('markets')}
-                      className="mt-6 inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 transition-colors cursor-pointer group-hover:translate-x-1"
-                    >
-                      <span>Explore Markets</span>
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
-                  </div>
-
-                  {/* Pillar 2: How It Works & Yield */}
-                  <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800/80 flex flex-col justify-between hover:border-emerald-500/50 transition-all group">
-                    <div className="space-y-4">
-                      <div className="w-12 h-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-                        <Sliders className="w-6 h-6" />
-                      </div>
-                      <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-                        Algorithmic Portfolios
-                      </h3>
-                      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                        Simulate returns and allocate into diversified investment strategies with 100% transparent benchmark models.
-                      </p>
-                    </div>
-                    <button
-                      onClick={() => setPublicPage('how-it-works')}
-                      className="mt-6 inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 transition-colors cursor-pointer group-hover:translate-x-1"
-                    >
-                      <span>Simulate Returns</span>
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
-                  </div>
-
-                  {/* Pillar 3: Security & Custody */}
-                  <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800/80 flex flex-col justify-between hover:border-emerald-500/50 transition-all group">
-                    <div className="space-y-4">
-                      <div className="w-12 h-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-                        <ShieldCheck className="w-6 h-6" />
-                      </div>
-                      <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-                        Anti-Scam Security Shield
-                      </h3>
-                      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                        Protected by 256-bit SSL encryption, FIPS 140-2 hardware security modules, and audited proof of solvency reserves.
-                      </p>
-                    </div>
-                    <button
-                      onClick={() => setPublicPage('security')}
-                      className="mt-6 inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 transition-colors cursor-pointer group-hover:translate-x-1"
-                    >
-                      <span>Inspect Security Enclave</span>
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* 5. Owl-Carousel / Testimonial Endorsements */}
-            <TestimonialCarouselSection />
-
-            {/* 6. Clean Trustpilot & ScamAdviser Trust Highlight */}
-            <section className="py-14 sm:py-18 bg-[#f8faf9] dark:bg-[#0c1613] border-b border-slate-200 dark:border-slate-800/80">
-              <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <TrustpilotReviewCard />
-              </div>
-            </section>
-
-            {/* 7. High-Impact Call To Action Banner */}
-            <section className="py-16 bg-slate-900 dark:bg-black text-white relative overflow-hidden">
-              <div className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:16px_16px]" />
-              <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-6">
-                <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
-                  Ready to Start Building Your Multi-Asset Wealth?
+                <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight max-w-3xl mx-auto leading-tight">
+                  Deploy Capital with Institutional Confidence on Growvest
                 </h2>
-                <p className="text-sm sm:text-base text-slate-300 max-w-xl mx-auto">
-                  Open an institutional account in less than 2 minutes. Experience instant deposit processing and bank-grade custody.
+
+                <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
+                  Open an institutional account in under 2 minutes. Experience segregated Swiss vault custody, 24/7 AI risk management, and zero-spread market execution.
                 </p>
-                <div className="flex flex-wrap items-center justify-center gap-3.5 pt-2">
+
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-4">
                   <button
                     onClick={() => {
                       setAuthModalMode('register');
                       setAuthModalOpen(true);
                     }}
-                    className="px-7 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm shadow-lg shadow-emerald-500/25 transition-all cursor-pointer"
+                    className="w-full sm:w-auto h-13 px-8 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-sm sm:text-base shadow-xl shadow-emerald-500/25 transition-all cursor-pointer flex items-center justify-center gap-2.5 active:scale-[0.98]"
                   >
-                    Open Institutional Account
+                    <span>Open Institutional Account</span>
+                    <ArrowRight className="w-4 h-4 text-slate-950 stroke-[2.5]" />
                   </button>
+
                   <button
                     onClick={() => setPublicPage('about')}
-                    className="px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-sm border border-slate-700 transition-all cursor-pointer"
+                    className="w-full sm:w-auto h-13 px-8 rounded-xl bg-emerald-950/40 hover:bg-emerald-900/60 border border-emerald-800/60 text-white font-bold text-sm sm:text-base transition-all cursor-pointer flex items-center justify-center"
                   >
-                    Learn About Our Firm
+                    <span>Review Fiduciary Mandate</span>
                   </button>
+                </div>
+
+                <div className="pt-6 text-xs text-slate-400 font-mono flex flex-wrap items-center justify-center gap-4">
+                  <span className="flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>UK CRN #14892011</span>
+                  </span>
+                  <span>•</span>
+                  <span className="flex items-center gap-1.5">
+                    <Lock className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>FinCEN MSB #31000289141088</span>
+                  </span>
+                  <span>•</span>
+                  <span>Same-Day Uncapped Settlement</span>
                 </div>
               </div>
             </section>
@@ -270,7 +204,7 @@ export const PublicWebsite: React.FC = () => {
   };
 
   return (
-    <div id="growvest-public-site-container" className="min-h-screen flex flex-col bg-[#f8faf9] dark:bg-[#0a1412] text-slate-900 dark:text-slate-100 transition-colors">
+    <div id="growvest-public-site-container" className="min-h-screen flex flex-col bg-white dark:bg-[#020e09] text-slate-900 dark:text-slate-100 transition-colors">
       <PublicNavbar />
       <main className="flex-1">
         {renderPublicContent()}

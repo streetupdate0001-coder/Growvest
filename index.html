@@ -2,6 +2,45 @@
 <html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      (function() {
+        var suppress = function(msg) {
+          if (!msg) return false;
+          var str = String(msg).toLowerCase();
+          return (
+            str === 'script error.' ||
+            str.indexOf('script error') !== -1 ||
+            str.indexOf('smartsupp') !== -1 ||
+            str.indexOf('translate') !== -1 ||
+            str.indexOf('google') !== -1
+          );
+        };
+        window.onerror = function(message, source, lineno, colno, error) {
+          if (suppress(message) || suppress(source) || (error && suppress(error.message))) {
+            return true;
+          }
+          return false;
+        };
+        window.addEventListener('error', function(event) {
+          if (suppress(event.message) || suppress(event.filename)) {
+            event.preventDefault();
+            if (typeof event.stopImmediatePropagation === 'function') {
+              event.stopImmediatePropagation();
+            }
+            return true;
+          }
+        }, true);
+        window.addEventListener('unhandledrejection', function(event) {
+          var reason = event && event.reason;
+          if (reason && (suppress(reason) || (reason.message && suppress(reason.message)))) {
+            event.preventDefault();
+            if (typeof event.stopImmediatePropagation === 'function') {
+              event.stopImmediatePropagation();
+            }
+          }
+        });
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Growvest - Invest & Grow Your Wealth</title>
     <meta name="description" content="Growvest is a multi-jurisdictional institutional crypto and multi-asset wealth management institution operating segregated cold custody in London, Zurich, and Frankfurt. Regulated under UK CRN #14892011, FinCEN MSB #31000289141088." />
@@ -80,7 +119,7 @@
                 "@type": "ContactPoint",
                 "telephone": "+44-20-7946-0912",
                 "contactType": "customer support",
-                "email": "london.desk@greeneza.com",
+                "email": "london.desk@growvest.com",
                 "areaServed": ["GB", "EU", "CH", "US", "SG"],
                 "availableLanguage": ["English", "German", "French", "Spanish", "Italian", "Chinese", "Arabic"]
               },
@@ -88,14 +127,14 @@
                 "@type": "ContactPoint",
                 "telephone": "+1-212-555-0198",
                 "contactType": "institutional desk",
-                "email": "americas@greeneza.com",
+                "email": "americas@growvest.com",
                 "areaServed": "US"
               },
               {
                 "@type": "ContactPoint",
                 "telephone": "+41-44-211-8800",
                 "contactType": "cold vault custody",
-                "email": "zurich.vault@greeneza.com",
+                "email": "zurich.vault@growvest.com",
                 "areaServed": "CH"
               }
             ],

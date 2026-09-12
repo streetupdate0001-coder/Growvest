@@ -100,6 +100,7 @@ export interface UserWallet {
   availableBalanceUsd: number;
   investedBalanceUsd: number;
   pendingBalanceUsd: number;
+  pnlPercentage24h?: number;
   lastUpdated: string;
 }
 
@@ -132,6 +133,8 @@ export interface MarketAsset {
   name: string;
   current_price: number;
   price_change_percentage_24h: number;
+  image?: string;
+  market_cap_rank?: number;
   high_24h?: number;
   low_24h?: number;
   total_volume?: number;
@@ -169,7 +172,7 @@ export interface InvestmentPlan {
   historicalBenchmark3Yr: string;
   isDemoPlan: boolean;
   terms: string;
-  status?: 'active' | 'inactive';
+  status?: 'active' | 'inactive' | 'paused';
   expectedRoiPercent?: number;
   lockPeriodDays?: number;
   isPopular?: boolean;

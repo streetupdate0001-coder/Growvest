@@ -22,6 +22,7 @@ export type AppTab =
   | 'markets'
   | 'portfolio'
   | 'activity'
+  | 'history'
   | 'invest'
   | 'cards'
   | 'analytics'
@@ -45,7 +46,8 @@ export type PublicPage =
   | 'faq'
   | 'contact'
   | 'transparency'
-  | 'reviews';
+  | 'reviews'
+  | 'calculator';
 
 interface AppContextType {
   currentLanguage: LanguageCode;
