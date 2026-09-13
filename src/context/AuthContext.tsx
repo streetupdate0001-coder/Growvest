@@ -443,6 +443,39 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
     return DEFAULT_COMPANY_DEPOSIT_WALLETS;
   });
+
+  // Listen for storage events across tabs/components to keep deposit wallets instantly synchronized
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'growvest_company_deposit_wallets' && e.newValue) {
+        try {
+          const parsed = JSON.parse(e.newValue);
+          if (Array.isArray(parsed)) {
+            setCompanyDepositWallets(parsed);
+          }
+        } catch (_err) {}
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+
+    // Also poll/check localStorage state on focus or interval for immediate same-window sync
+    const interval = setInterval(() => {
+      try {
+        const saved = localStorage.getItem('growvest_company_deposit_wallets');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && JSON.stringify(parsed) !== JSON.stringify(companyDepositWallets)) {
+            setCompanyDepositWallets(parsed);
+          }
+        }
+      } catch (_e) {}
+    }, 1000);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, [companyDepositWallets]);
   const [auditLogs, setAuditLogs] = useState<AuditLogEntry[]>([]);
   const [sessions, setSessions] = useState<ActiveSession[]>([]);
   const [loginHistory, setLoginHistory] = useState<LoginHistoryItem[]>([]);
@@ -1731,7 +1764,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     updateProfile,
     uploadProfilePhoto: async () => ({ success: true }),
     removeProfilePhoto: async () => ({ success: true }),
-    submitVerification: async () => ({ success: true }),
+    submitVerification: async (documentType: string, documentNumber?: string, issuingCountry?: string, frontDoc?: string, backDoc?: string) => {
+      if (!user) return { success: false };
+      const newSub: KYCSubmission = {
+        id: 'kyc_' + Math.random().toString(36).substring(2, 9),
+        userId: user.id,
+        userName: user.fullName || user.email,
+        userEmail: user.email,
+        documentType: (documentType as any) || 'passport',
+        documentNumber: documentNumber || 'DOC-99482',
+        issuingCountry: issuingCountry || user.country || 'Switzerland',
+        frontDocumentUrl: frontDoc || '',
+        backDocumentUrl: backDoc || '',
+        submittedAt: new Date().toISOString(),
+        status: 'pending'
+      };
+
+      const updated = [newSub, ...kycSubmissions];
+      setKycSubmissions(updated);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('growvest_kyc_submissions', JSON.stringify(updated));
+      }
+
+      try {
+        await supabase.from('kyc_submissions').insert([{
+          id: newSub.id,
+          user_id: user.id,
+          user_name: newSub.userName,
+          user_email: newSub.userEmail,
+          id_type: newSub.documentType,
+          document_number: newSub.documentNumber,
+          issuing_country: newSub.issuingCountry,
+          id_front_url: newSub.frontDocumentUrl,
+          selfie_url: newSub.backDocumentUrl,
+          status: 'pending'
+        }]);
+      } catch (_e) {}
+
+      setUser({ ...user, kycStatus: 'pending' });
+      return { success: true };
+    },
     enable2FA: async () => ({ success: true, recoveryCodes: ['RC-123', 'RC-456'] }),
     disable2FA: async () => ({ success: true }),
     deposit,

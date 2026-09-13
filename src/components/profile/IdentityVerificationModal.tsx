@@ -48,7 +48,7 @@ export const IdentityVerificationModal: React.FC<IdentityVerificationModalProps>
     setError(null);
     setIsSubmitting(true);
 
-    const result = await submitVerification(`${docType.toUpperCase()}-${docNumber}`);
+    const result = await submitVerification(docType, docNumber, issuingCountry, filePreview || undefined);
     setIsSubmitting(false);
 
     if (result.success) {

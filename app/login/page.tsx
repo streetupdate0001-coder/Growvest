@@ -360,39 +360,7 @@ export default function LoginPage({ onSuccess, onNavigate }: LoginPageProps) {
           </button>
         </form>
 
-        {/* 1-Click Fast Fill for Testing and Review */}
-        <div className="mt-5 p-3 rounded-xl bg-slate-950/60 border border-slate-800/80 space-y-2">
-          <div className="flex items-center justify-between text-[11px] text-slate-400 font-medium">
-            <span>Quick Test Portals</span>
-            <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">1-Click</span>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={() => {
-                setIsSignUp(false);
-                setEmail('macreativehub1@gmail.com');
-                setPassword('Evans100%');
-                setErrorMsg(null);
-              }}
-              className="px-2.5 py-1.5 rounded-lg bg-blue-950/40 hover:bg-blue-900/50 border border-blue-800/40 text-sky-300 text-[11px] font-medium transition-all text-left truncate cursor-pointer"
-            >
-              👤 Evans (Investor)
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setIsSignUp(false);
-                setEmail('admin@growvest.com');
-                setPassword('admin');
-                setErrorMsg(null);
-              }}
-              className="px-2.5 py-1.5 rounded-lg bg-purple-950/40 hover:bg-purple-900/50 border border-purple-800/40 text-purple-300 text-[11px] font-medium transition-all text-left truncate cursor-pointer"
-            >
-              🛡️ Executive Admin
-            </button>
-          </div>
-        </div>
+
 
         {/* Toggle sign in / sign up */}
         <div className="mt-6 pt-5 border-t border-slate-800/80 text-center">
