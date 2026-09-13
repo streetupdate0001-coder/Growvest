@@ -2,20 +2,10 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
-  "cleanUrls": true,
   "rewrites": [
-    { "source": "/admin", "destination": "/admin.html" },
-    { "source": "/admin/(.*)", "destination": "/admin.html" },
-    { "source": "/dashboard", "destination": "/dashboard.html" },
-    { "source": "/dashboard/(.*)", "destination": "/dashboard.html" },
-    { "source": "/login", "destination": "/login.html" },
-    { "source": "/invest", "destination": "/invest.html" },
-    { "source": "/withdraw", "destination": "/withdraw.html" },
-    { "source": "/history", "destination": "/history.html" },
-    { "source": "/cards", "destination": "/cards.html" },
-    { "source": "/payments", "destination": "/payments.html" },
-    { "source": "/more", "destination": "/more.html" },
-    { "source": "/points", "destination": "/points.html" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
