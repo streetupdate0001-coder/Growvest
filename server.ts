@@ -458,6 +458,18 @@ async function startServer() {
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), "dist");
+    
+    // Explicit route handlers for SPA routes to prevent static middleware directory 404s
+    const clientRoutes = ['/admin', '/dashboard', '/login', '/invest', '/withdraw', '/history', '/cards', '/payments', '/more', '/points'];
+    clientRoutes.forEach(route => {
+      app.get(route, (_req, res) => {
+        res.sendFile(path.join(distPath, "index.html"));
+      });
+      app.get(`${route}/*`, (_req, res) => {
+        res.sendFile(path.join(distPath, "index.html"));
+      });
+    });
+
     app.use(express.static(distPath));
     app.get("*", (_req, res) => {
       res.sendFile(path.join(distPath, "index.html"));

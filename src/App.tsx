@@ -30,6 +30,7 @@ import HistoryPage from '../app/history/page';
 import CardsPage from '../app/cards/page';
 import PaymentsPage from '../app/payments/page';
 import MorePage from '../app/more/page';
+import PointsPage from '../app/points/page';
 
 // Authenticated User Application Shell & Views
 import { UserAppHeader } from './components/layout/UserAppHeader';
@@ -264,6 +265,23 @@ const MainAppContent: React.FC = () => {
     );
   });
 
+  // Dedicated Points Route (/app/points, /points, #points)
+  const [isPointsHashRoute, setIsPointsHashRoute] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    const hash = (window.location.hash || '').toLowerCase();
+    const path = (window.location.pathname || '').toLowerCase();
+    const search = new URLSearchParams(window.location.search);
+    return (
+      hash.startsWith('#points') ||
+      hash.startsWith('#/points') ||
+      path.endsWith('/points') ||
+      path === '/points' ||
+      path.endsWith('/app/points') ||
+      search.get('page') === 'points' ||
+      search.get('view') === 'points'
+    );
+  });
+
   // Unified Navigator
   const handleNavigate = (destination: string) => {
     if (typeof window === 'undefined') return;
@@ -398,6 +416,15 @@ const MainAppContent: React.FC = () => {
         search.get('page') === 'more' ||
         search.get('view') === 'more';
 
+      const isPoints =
+        hash.startsWith('#points') ||
+        hash.startsWith('#/points') ||
+        path.endsWith('/points') ||
+        path === '/points' ||
+        path.endsWith('/app/points') ||
+        search.get('page') === 'points' ||
+        search.get('view') === 'points';
+
       if (hash.includes('privacy') || path.endsWith('/privacy')) {
         setLegalRoute('privacy');
       } else if (hash.includes('terms') || path.endsWith('/terms')) {
@@ -415,6 +442,7 @@ const MainAppContent: React.FC = () => {
       setIsCardsHashRoute(isCards);
       setIsPaymentsHashRoute(isPayments);
       setIsMoreHashRoute(isMore);
+      setIsPointsHashRoute(isPoints);
     };
 
     window.addEventListener('hashchange', handleRouteChange);
@@ -554,6 +582,13 @@ const MainAppContent: React.FC = () => {
     );
   }
 
+  // 10. DEDICATED POINTS ROUTE (/points, #points, /app/points)
+  if (isPointsHashRoute) {
+    return (
+      <PointsPage onNavigate={handleNavigate} />
+    );
+  }
+
   // 2. PUBLIC WEBSITE EXPERIENCE (Visitors who have not signed in)
   if (!isAuthenticated) {
     return (
@@ -606,6 +641,18 @@ const MainAppContent: React.FC = () => {
 
   // 4. AUTHENTICATED USER APPLICATION SHELL (Clients and Admin testing client views)
   const isPendingApproval = user?.accountStatus === 'pending';
+
+  // For regular verified clients, directly display the modern mobile-first investor application matching the uploaded design
+  if (isAuthenticated && !isAdmin && !isPendingApproval) {
+    const currentTab = activeTab as string;
+    if (currentTab === 'cards') return <CardsPage onNavigate={handleNavigate} />;
+    if (currentTab === 'invest') return <InvestPage onNavigate={handleNavigate} />;
+    if (currentTab === 'points') return <PointsPage onNavigate={handleNavigate} />;
+    if (currentTab === 'payments' || currentTab === 'activity' || currentTab === 'history') return <PaymentsPage onNavigate={handleNavigate} />;
+    if (currentTab === 'more') return <MorePage onNavigate={handleNavigate} />;
+    if (currentTab === 'withdraw') return <WithdrawPage onNavigate={handleNavigate} />;
+    return <DashboardPage onNavigate={handleNavigate} />;
+  }
 
   const renderAuthenticatedContent = () => {
     // If account is still pending administrative approval, show the dedicated status screen

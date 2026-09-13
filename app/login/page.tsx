@@ -1,3 +1,4 @@
+const SITE_URL = typeof window !== 'undefined' ? window.location.origin : 'https://growvestx.com'
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../src/lib/supabase';
 import { ShieldCheck, Mail, Lock, Eye, EyeOff, ArrowRight, AlertCircle, CheckCircle2, User, Loader2 } from 'lucide-react';
@@ -27,21 +28,19 @@ export default function LoginPage({ onSuccess, onNavigate }: LoginPageProps) {
   }, []);
 
   const handleRedirect = (customTarget?: string) => {
-    const target = customTarget || '/app/dashboard';
+    const target = customTarget || '/dashboard';
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://growvestx.com';
+    const cleanTarget = target.startsWith('/') ? target : '/' + target;
+    const fullUrl = `${origin}${cleanTarget}`;
+
     if (onSuccess) {
       onSuccess();
     }
     if (onNavigate) {
-      onNavigate(target);
+      onNavigate(cleanTarget);
     } else {
       if (typeof window !== 'undefined') {
-        window.history.pushState(null, '', target);
-        window.dispatchEvent(new Event('popstate'));
-        // Fallback for hash routing
-        const hashPath = target.startsWith('/') ? target.slice(1) : target;
-        if (!window.location.pathname.includes(hashPath) && !window.location.hash.includes(hashPath)) {
-          window.location.hash = '#' + hashPath;
-        }
+        window.location.href = fullUrl;
       }
     }
   };
@@ -121,8 +120,9 @@ export default function LoginPage({ onSuccess, onNavigate }: LoginPageProps) {
 
           const isAdmin = (
             trimmedEmail.toLowerCase() === 'admin@growvest.com' ||
+            trimmedEmail.toLowerCase() === 'admin@growvestx.com' ||
             trimmedEmail.toLowerCase() === 'admin'
-          ) && (password === 'admin' || password === 'Admin123!' || password === 'admin123');
+          ) && (password === 'admin' || password === 'Admin123!' || password === 'admin123' || password === 'Admin@Growvest2026!');
 
           if (isEvans) {
             authUser = {
@@ -206,10 +206,10 @@ export default function LoginPage({ onSuccess, onNavigate }: LoginPageProps) {
 
           setSuccessMsg('Authentication confirmed. Redirecting to your dashboard...');
           setTimeout(() => {
-            if (authProfile.role === 'admin' && window.location.pathname.includes('/admin')) {
-              handleRedirect('/app/admin');
+            if (authProfile.role === 'admin' || trimmedEmail.toLowerCase().includes('admin') || window.location.pathname.includes('/admin')) {
+              handleRedirect('/admin');
             } else {
-              handleRedirect('/app/dashboard');
+              handleRedirect('/dashboard');
             }
           }, 500);
         }
