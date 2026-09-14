@@ -214,15 +214,31 @@ export const PublicFooter: React.FC = () => {
                   onClick={() => handleNav('about')}
                   className="text-slate-300 hover:text-emerald-400 transition-colors cursor-pointer"
                 >
-                  About Growvest (growvestx.com)
+                  About GrowvestX
                 </button>
               </li>
               <li>
                 <button
-                  onClick={() => handleNav('about')}
+                  onClick={() => handleNav('company-info')}
                   className="text-slate-300 hover:text-emerald-400 transition-colors cursor-pointer"
                 >
-                  Executive Leadership & Governance
+                  Company & Business Info
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleNav('services')}
+                  className="text-slate-300 hover:text-emerald-400 transition-colors cursor-pointer"
+                >
+                  Services & Solutions
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleNav('faq')}
+                  className="text-slate-300 hover:text-emerald-400 transition-colors cursor-pointer"
+                >
+                  Frequently Asked Questions
                 </button>
               </li>
               <li>
@@ -230,33 +246,7 @@ export const PublicFooter: React.FC = () => {
                   onClick={() => handleNav('contact')}
                   className="text-slate-300 hover:text-emerald-400 transition-colors cursor-pointer"
                 >
-                  Global Infrastructure Hubs
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => handleNav('security')}
-                  className="text-slate-300 hover:text-emerald-400 transition-colors cursor-pointer"
-                >
-                  FIPS 140-2 Level 3 HSM Architecture
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => handleNav('reviews')}
-                  className="text-slate-300 hover:text-emerald-400 transition-colors cursor-pointer flex items-center gap-1.5"
-                >
-                  <Star className="w-3.5 h-3.5 fill-[#00b67a] text-[#00b67a]" />
-                  <span>Trustpilot Reviews (4.9★)</span>
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => setIsScamAdviserModalOpen(true)}
-                  className="text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer flex items-center gap-1.5 font-semibold"
-                >
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>ScamAdviser Audit (89/100)</span>
+                  Contact & Support
                 </button>
               </li>
             </ul>
@@ -266,64 +256,47 @@ export const PublicFooter: React.FC = () => {
           <div className="space-y-4">
             <h4 className="text-xs font-mono uppercase font-bold tracking-wider text-white flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-              <span>Legal & Compliance</span>
+              <span>Legal & Policies</span>
             </h4>
             <ul className="space-y-2.5 text-xs">
               <li>
                 <button
-                  onClick={() => setIsCertificateModalOpen(true)}
-                  className="text-slate-300 hover:text-emerald-400 transition-colors cursor-pointer flex items-center gap-1.5"
+                  onClick={() => handleNav('terms')}
+                  className="text-slate-300 hover:text-emerald-400 transition-colors cursor-pointer"
                 >
-                  <Award className="w-3.5 h-3.5 text-amber-400" />
-                  <span>UK Companies House (CRN: 14892011)</span>
+                  Terms & Conditions
                 </button>
               </li>
               <li>
                 <button
-                  onClick={() => setIsCertificateModalOpen(true)}
+                  onClick={() => handleNav('privacy')}
                   className="text-slate-300 hover:text-emerald-400 transition-colors cursor-pointer"
                 >
-                  FinCEN MSB Registration (#31000289141088)
-                </button>
-              </li>
-              <li>
-                <a
-                  href="#terms"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    window.location.hash = '#terms';
-                  }}
-                  className="text-slate-300 hover:text-emerald-400 transition-colors cursor-pointer"
-                >
-                  Terms of Custody & Service
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#privacy"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    window.location.hash = '#privacy';
-                  }}
-                  className="text-slate-300 hover:text-emerald-400 transition-colors cursor-pointer"
-                >
-                  Privacy & Data Protection Policy
-                </a>
-              </li>
-              <li>
-                <button
-                  onClick={() => handleNav('transparency')}
-                  className="text-slate-300 hover:text-emerald-400 transition-colors cursor-pointer"
-                >
-                  Anti-Money Laundering (AML/CFT)
+                  Privacy Policy
                 </button>
               </li>
               <li>
                 <button
-                  onClick={() => handleNav('transparency')}
+                  onClick={() => handleNav('risk-disclosure')}
                   className="text-slate-300 hover:text-emerald-400 transition-colors cursor-pointer"
                 >
-                  Risk & Solvency Disclosures
+                  Risk Disclosure
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleNav('refund-policy')}
+                  className="text-slate-300 hover:text-emerald-400 transition-colors cursor-pointer"
+                >
+                  Refund & Cancellation Policy
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleNav('customer-support')}
+                  className="text-slate-300 hover:text-emerald-400 transition-colors cursor-pointer"
+                >
+                  Customer Support Center
                 </button>
               </li>
             </ul>

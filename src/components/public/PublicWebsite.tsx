@@ -17,6 +17,13 @@ import { PublicSecuritySection } from './PublicSecuritySection';
 import { BankLevelSecuritySection } from './BankLevelSecuritySection';
 import { PublicFaqSection } from './PublicFaqSection';
 import { PublicContactSection } from './PublicContactSection';
+import { PublicCompanyInfo } from './PublicCompanyInfo';
+import { PublicServicesSection } from './PublicServicesSection';
+import { PublicTermsPage } from './PublicTermsPage';
+import { PublicPrivacyPage } from './PublicPrivacyPage';
+import { PublicRiskDisclosurePage } from './PublicRiskDisclosurePage';
+import { PublicRefundPolicyPage } from './PublicRefundPolicyPage';
+import { PublicCustomerSupportPage } from './PublicCustomerSupportPage';
 import { TransparencySection } from './TransparencySection';
 import { CertificateSection } from './CertificateSection';
 import { CertificateModal } from './CertificateModal';
@@ -117,6 +124,21 @@ export const PublicWebsite: React.FC = () => {
             <RegulatedInfrastructureSection />
           </div>
         );
+
+      case 'company-info':
+        return <PublicCompanyInfo />;
+      case 'services':
+        return <PublicServicesSection />;
+      case 'terms':
+        return <PublicTermsPage />;
+      case 'privacy':
+        return <PublicPrivacyPage />;
+      case 'risk-disclosure':
+        return <PublicRiskDisclosurePage />;
+      case 'refund-policy':
+        return <PublicRefundPolicyPage />;
+      case 'customer-support':
+        return <PublicCustomerSupportPage />;
 
       case 'transparency':
         return (

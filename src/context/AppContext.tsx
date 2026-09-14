@@ -47,7 +47,14 @@ export type PublicPage =
   | 'contact'
   | 'transparency'
   | 'reviews'
-  | 'calculator';
+  | 'calculator'
+  | 'company-info'
+  | 'services'
+  | 'terms'
+  | 'privacy'
+  | 'risk-disclosure'
+  | 'refund-policy'
+  | 'customer-support';
 
 interface AppContextType {
   currentLanguage: LanguageCode;
