@@ -89,6 +89,9 @@ export interface AuthContextType {
   openBiometricPrompt: (onSuccess?: () => void, targetArea?: string) => void;
   closeBiometricPrompt: () => void;
   biometricTargetArea: string;
+  isPhotoModalOpen: boolean;
+  openPhotoModal: () => void;
+  closePhotoModal: () => void;
   signUp: (email: string, password: string, fullName: string) => Promise<any>;
   signIn: (email: string, password: string) => Promise<any>;
   signOut: () => Promise<void>;
@@ -199,32 +202,8 @@ const DEFAULT_ADMIN_USER: UserProfile = {
   antiPhishingPhrase: 'GV-EXEC-OVERSEER'
 };
 
-export const DEFAULT_EVANS_USER: UserProfile = {
-  id: 'usr_macreativehub1',
-  firstName: 'Evans',
-  lastName: 'Creative Hub',
-  username: 'macreativehub1',
-  email: 'macreativehub1@gmail.com',
-  phoneCountryCode: '+1',
-  phoneNumber: '',
-  country: 'United States',
-  role: 'user',
-  accountStatus: 'active',
-  verificationStatus: 'verified',
-  twoFactorEnabled: false,
-  createdAt: '2026-01-01T00:00:00Z',
-  lastLoginAt: new Date().toISOString(),
-  timezone: 'UTC',
-  preferredLanguage: 'en',
-  preferredCurrency: 'USD',
-  marketingConsent: true,
-  antiPhishingPhrase: '',
-  balance: 0.00
-};
-
 const INITIAL_SYSTEM_USERS: UserProfile[] = [
-  DEFAULT_ADMIN_USER,
-  DEFAULT_EVANS_USER
+  DEFAULT_ADMIN_USER
 ];
 
 const INITIAL_WALLETS_MAP: Record<string, UserWallet> = {
@@ -232,13 +211,6 @@ const INITIAL_WALLETS_MAP: Record<string, UserWallet> = {
     totalValueUsd: 128450.00,
     availableBalanceUsd: 45000.00,
     investedBalanceUsd: 83450.00,
-    pendingBalanceUsd: 0.00,
-    lastUpdated: new Date().toISOString()
-  },
-  usr_macreativehub1: {
-    totalValueUsd: 0.00,
-    availableBalanceUsd: 0.00,
-    investedBalanceUsd: 0.00,
     pendingBalanceUsd: 0.00,
     lastUpdated: new Date().toISOString()
   }
@@ -376,8 +348,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (saved) {
           const parsed = JSON.parse(saved);
           if (Array.isArray(parsed) && parsed.length > 0) {
-            const hasEvans = parsed.some(u => u.email?.toLowerCase() === 'macreativehub1@gmail.com');
-            return hasEvans ? parsed : [...parsed, DEFAULT_EVANS_USER];
+            return parsed;
           }
         }
       } catch (_e) {}
@@ -392,9 +363,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (saved) {
           const parsed = JSON.parse(saved);
           if (parsed && typeof parsed === 'object') {
-            if (!parsed['usr_macreativehub1']) {
-              parsed['usr_macreativehub1'] = INITIAL_WALLETS_MAP['usr_macreativehub1'];
-            }
             return parsed;
           }
         }
@@ -491,6 +459,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isBiometricUnlocked, setIsBiometricUnlocked] = useState(false);
   const [isBiometricPromptOpen, setIsBiometricPromptOpen] = useState(false);
   const [biometricTargetArea, setBiometricTargetArea] = useState('Institutional Portfolio Vault');
+  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
   const biometricSuccessCallbackRef = useRef<(() => void) | null>(null);
 
   const mapSupabaseUserToProfile = (supaUser: any, profile?: any): UserProfile & { [key: string]: any } => {
@@ -787,46 +756,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // 2. SIGN IN
   const signIn = async (email: string, password: string) => {
-    // 0. Evans account instant check
-    const isEvansAttempt = (
-      email.toLowerCase() === 'macreativehub1@gmail.com' ||
-      email.toLowerCase() === 'macreativehub1'
-    ) && (password === 'Evans100%' || password === 'Evans100');
-
-    if (isEvansAttempt) {
-      try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email: 'macreativehub1@gmail.com',
-          password: 'Evans100%'
-        });
-        if (!error && data?.user) {
-          const { data: profile } = await supabase.from('profiles').select('*').eq('id', data.user.id).single();
-          const mapped = mapSupabaseUserToProfile(data.user, profile);
-          setUser(mapped);
-          localStorage.setItem('greeneza_auth_user', JSON.stringify(mapped));
-          await loadUserData(data.user.id);
-          return data;
-        }
-      } catch (_e) {
-        // Fall through to instant login
-      }
-
-      // Smooth login for Evans account
-      const evansUser = allUsers.find(u => u.email.toLowerCase() === 'macreativehub1@gmail.com') || DEFAULT_EVANS_USER;
-      setUser(evansUser);
-      localStorage.setItem('greeneza_auth_user', JSON.stringify(evansUser));
-      const evansWallet = userWalletsMap[evansUser.id] || INITIAL_WALLETS_MAP['usr_macreativehub1'] || {
-        totalValueUsd: 0.00,
-        availableBalanceUsd: 0.00,
-        investedBalanceUsd: 0.00,
-        pendingBalanceUsd: 0.00,
-        lastUpdated: new Date().toISOString()
-      };
-      setWallet(evansWallet);
-      await loadUserData(evansUser.id);
-      return { user: evansUser };
-    }
-
     const isAdminAttempt = (
       email.toLowerCase() === ADMIN_CREDENTIALS.email.toLowerCase() ||
       email.toLowerCase() === ADMIN_CREDENTIALS.username.toLowerCase() ||
@@ -919,9 +848,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           }
 
           if (!matchedUser) {
-            const isEvans = email.toLowerCase() === 'macreativehub1@gmail.com';
             const username = email.split('@')[0];
-            matchedUser = isEvans ? DEFAULT_EVANS_USER : {
+            matchedUser = {
               id: `usr_${username}_${Date.now()}`,
               firstName: username.charAt(0).toUpperCase() + username.slice(1),
               lastName: 'Investor',
@@ -1011,10 +939,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Local recovery fallback
       const errorMsg = err.message?.toLowerCase() || '';
       if (errorMsg.includes('email not confirmed')) {
-        const isEvans = email.toLowerCase() === 'macreativehub1@gmail.com';
         const matchedUser = allUsers.find(
           u => u.email.toLowerCase() === email.toLowerCase() || u.username.toLowerCase() === email.toLowerCase()
-        ) || (isEvans ? DEFAULT_EVANS_USER : null);
+        );
 
         if (matchedUser) {
           setUser(matchedUser);
@@ -1081,10 +1008,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch (err: any) {
       const msg = err.message?.toLowerCase() || '';
       if (msg.includes('email not confirmed')) {
-        const isEvans = emailOrUsername.toLowerCase().includes('macreativehub1');
         const fallbackUser = allUsers.find(
           u => u.email.toLowerCase() === emailOrUsername.toLowerCase() || u.username.toLowerCase() === emailOrUsername.toLowerCase()
-        ) || (isEvans ? DEFAULT_EVANS_USER : null);
+        );
         if (fallbackUser) {
           setUser(fallbackUser);
           localStorage.setItem('greeneza_auth_user', JSON.stringify(fallbackUser));
@@ -1754,6 +1680,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     },
     closeBiometricPrompt: () => setIsBiometricPromptOpen(false),
     biometricTargetArea,
+    isPhotoModalOpen,
+    openPhotoModal: () => setIsPhotoModalOpen(true),
+    closePhotoModal: () => setIsPhotoModalOpen(false),
     signUp,
     signIn,
     signOut,
@@ -1762,8 +1691,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     register,
     logout,
     updateProfile,
-    uploadProfilePhoto: async () => ({ success: true }),
-    removeProfilePhoto: async () => ({ success: true }),
+    uploadProfilePhoto: async (dataUrl: string) => {
+      if (!user) return { success: false, error: 'No active user session' };
+      const updatedUser = { ...user, avatarUrl: dataUrl };
+      setUser(updatedUser);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('growvest_current_user', JSON.stringify(updatedUser));
+        const updatedAll = allUsers.map(u => u.id === user.id ? { ...u, avatarUrl: dataUrl } : u);
+        setAllUsers(updatedAll);
+        localStorage.setItem('growvest_all_users', JSON.stringify(updatedAll));
+      }
+      return { success: true };
+    },
+    removeProfilePhoto: async () => {
+      if (!user) return { success: false };
+      const updatedUser = { ...user, avatarUrl: undefined };
+      setUser(updatedUser);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('growvest_current_user', JSON.stringify(updatedUser));
+        const updatedAll = allUsers.map(u => u.id === user.id ? { ...u, avatarUrl: undefined } : u);
+        setAllUsers(updatedAll);
+        localStorage.setItem('growvest_all_users', JSON.stringify(updatedAll));
+      }
+      return { success: true };
+    },
     submitVerification: async (documentType: string, documentNumber?: string, issuingCountry?: string, frontDoc?: string, backDoc?: string) => {
       if (!user) return { success: false };
       const newSub: KYCSubmission = {

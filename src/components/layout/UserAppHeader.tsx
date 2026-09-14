@@ -18,13 +18,15 @@ import {
   Sparkles,
   Lock,
   Phone,
-  Mail
+  Mail,
+  Camera
 } from 'lucide-react';
 import { BrandLogo } from '../common/BrandLogo';
 import { useApp } from '../../context/AppContext';
 import { useAuth } from '../../context/AuthContext';
 import { formatCurrency } from '../../services/currency';
 import { UserAvatar } from '../common/UserAvatar';
+import { PhotoUploadModal } from '../profile/PhotoUploadModal';
 
 export const UserAppHeader: React.FC = () => {
   const {
@@ -44,7 +46,7 @@ export const UserAppHeader: React.FC = () => {
     t
   } = useApp();
 
-  const { user, wallet, logout, isAdmin } = useAuth();
+  const { user, wallet, logout, isAdmin, openPhotoModal, isPhotoModalOpen, closePhotoModal } = useAuth();
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
   const userRef = useRef<HTMLDivElement>(null);
@@ -332,6 +334,17 @@ export const UserAppHeader: React.FC = () => {
 
                     <button
                       onClick={() => {
+                        openPhotoModal();
+                        setUserDropdownOpen(false);
+                      }}
+                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-blue-600 dark:text-blue-400 hover:bg-blue-500/10 transition-colors cursor-pointer text-left font-semibold"
+                    >
+                      <Camera className="w-3.5 h-3.5 text-blue-400" />
+                      <span>Upload Passport / Photo</span>
+                    </button>
+
+                    <button
+                      onClick={() => {
                         setActiveTab('security');
                         setUserDropdownOpen(false);
                       }}
@@ -394,6 +407,12 @@ export const UserAppHeader: React.FC = () => {
           </button>
         </div>
       </div>
+
+      {/* Global Photo Upload & Passport Picture Modal */}
+      <PhotoUploadModal
+        isOpen={isPhotoModalOpen}
+        onClose={closePhotoModal}
+      />
     </header>
   );
 };

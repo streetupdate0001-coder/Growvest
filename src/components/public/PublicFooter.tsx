@@ -339,20 +339,14 @@ export const PublicFooter: React.FC = () => {
               <div className="p-3.5 rounded-2xl bg-[#041a12] border border-emerald-900/50 space-y-2">
                 <div className="flex items-center gap-2 text-slate-300">
                   <Mail className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                  <a href="mailto:support@growvest.com" className="hover:text-emerald-400 font-mono text-[11px]">
-                    support@growvest.com
+                  <a href="mailto:support@growvestx.com" className="hover:text-emerald-400 font-mono text-[11px]">
+                    support@growvestx.com
                   </a>
                 </div>
                 <div className="flex items-center gap-2 text-slate-300">
                   <Phone className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                  <a href="tel:+442079460912" className="hover:text-emerald-400 font-mono text-[11px]">
-                    +44 20 7946 0912 (UK Desk)
-                  </a>
-                </div>
-                <div className="flex items-center gap-2 text-slate-300">
-                  <Phone className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                  <a href="tel:+12125550198" className="hover:text-emerald-400 font-mono text-[11px]">
-                    +1 (212) 555-0198 (US Desk)
+                  <a href="tel:+447900413315" className="hover:text-emerald-400 font-mono text-[11px]">
+                    +44 7900 413315
                   </a>
                 </div>
               </div>
@@ -360,11 +354,7 @@ export const PublicFooter: React.FC = () => {
               <div className="text-[11px] text-slate-400 space-y-1.5 pt-1 font-sans">
                 <div className="flex items-start gap-1.5">
                   <Building className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                  <span>London: 25 Canada Square, Canary Wharf, E14 5LQ</span>
-                </div>
-                <div className="flex items-start gap-1.5">
-                  <Building className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                  <span>New York: 1 World Trade Center, Suite 8500, NY 10007</span>
+                  <span>200 Aldersgate St, Barbican, London EC14 4HD, United Kingdom</span>
                 </div>
               </div>
 
@@ -377,21 +367,21 @@ export const PublicFooter: React.FC = () => {
 
         </div>
 
-        {/* Bottom Bar: Copyright & Security Note */}
-        <div className="pt-8 border-t border-emerald-950/70 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 font-mono">
-          <div>
-            © 2026 Growvest Global Technologies Inc. (growvestx.com). All rights reserved.
+        {/* Bottom Bar: Exact Company Registration Details */}
+        <div className="pt-8 border-t border-emerald-950/70 flex flex-col lg:flex-row items-center justify-between gap-4 text-xs text-slate-400 font-mono">
+          <div className="space-y-1 text-center lg:text-left leading-relaxed">
+            <div>
+              <strong className="text-white font-bold">GrowvestX Ltd.</strong>{' '}
+              Office Address: 200 Aldersgate St, Barbican, London EC14 4HD, United Kingdom.{' '}
+              Email: <a href="mailto:support@growvestx.com" className="text-emerald-400 hover:underline">support@growvestx.com</a>{' '}
+              Phone: <a href="tel:+447900413315" className="text-emerald-400 hover:underline">+44 7900 413315</a>{' '}
+              Company Reg NO: <span className="text-emerald-400 font-bold">14892018</span>{' '}
+              We are Registered in England & Wales.
+            </div>
           </div>
 
-          <div className="flex items-center gap-4 text-[11px]">
-            <span>London</span>
-            <span>•</span>
-            <span>Frankfurt</span>
-            <span>•</span>
-            <span>Zurich</span>
-            <span>•</span>
-            <span>New York</span>
-            
+          <div className="flex items-center gap-4 text-[11px] shrink-0">
+            <span>© 2026 GrowvestX Ltd.</span>
             <button
               onClick={scrollToTop}
               className="p-2 rounded-lg bg-[#041a12] hover:bg-[#072d1f] text-slate-300 hover:text-white transition-colors ml-2 cursor-pointer"

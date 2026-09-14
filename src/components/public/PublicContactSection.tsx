@@ -75,58 +75,58 @@ export const PublicContactSection: React.FC = () => {
             <div className="space-y-2 text-xs text-slate-600 dark:text-slate-400 font-sans">
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                <span>Level 32, 25 Canada Square, Canary Wharf, London, E14 5LQ, United Kingdom</span>
+                <span>200 Aldersgate St, Barbican, London EC14 4HD, United Kingdom</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-emerald-500 shrink-0" />
-                <a href="tel:+442079460912" className="font-mono text-slate-900 dark:text-slate-200 hover:text-emerald-500 font-semibold">
-                  +44 20 7946 0912
+                <a href="tel:+447900413315" className="font-mono text-slate-900 dark:text-slate-200 hover:text-emerald-500 font-semibold">
+                  +44 7900 413315
                 </a>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-emerald-500 shrink-0" />
-                <a href="mailto:london.desk@growvest.com" className="font-mono text-slate-900 dark:text-slate-200 hover:text-emerald-500 font-semibold">
-                  london.desk@growvest.com
+                <a href="mailto:support@growvestx.com" className="font-mono text-slate-900 dark:text-slate-200 hover:text-emerald-500 font-semibold">
+                  support@growvestx.com
                 </a>
               </div>
             </div>
           </div>
 
-          {/* New York Americas Hub */}
+          {/* Hub 2 */}
           <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
             <div className="flex items-center justify-between">
               <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
                 <Building className="w-5 h-5" />
               </div>
               <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30">
-                AMERICAS DESK
+                UK DESK
               </span>
             </div>
             <div>
-              <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">New York Institutional Hub</h3>
-              <p className="text-xs text-slate-500 font-mono">FINRA Standards Compliance</p>
+              <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">London Hub</h3>
+              <p className="text-xs text-slate-500 font-mono">FCA Regulatory Jurisdiction</p>
             </div>
             <div className="space-y-2 text-xs text-slate-600 dark:text-slate-400 font-sans">
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                <span>One World Trade Center, Suite 8500, New York, NY 10007, United States</span>
+                <span>200 Aldersgate St, Barbican, London EC14 4HD, United Kingdom</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-amber-500 shrink-0" />
-                <a href="tel:+12125550198" className="font-mono text-slate-900 dark:text-slate-200 hover:text-amber-500 font-semibold">
-                  +1 (212) 555-0198
+                <a href="tel:+447900413315" className="font-mono text-slate-900 dark:text-slate-200 hover:text-amber-500 font-semibold">
+                  +44 7900 413315
                 </a>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-amber-500 shrink-0" />
-                <a href="mailto:ny.compliance@growvest.com" className="font-mono text-slate-900 dark:text-slate-200 hover:text-amber-500 font-semibold">
-                  ny.compliance@growvest.com
+                <a href="mailto:support@growvestx.com" className="font-mono text-slate-900 dark:text-slate-200 hover:text-amber-500 font-semibold">
+                  support@growvestx.com
                 </a>
               </div>
             </div>
           </div>
 
-          {/* Zurich Operations Hub */}
+          {/* Hub 3 */}
           <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
             <div className="flex items-center justify-between">
               <div className="w-10 h-10 rounded-2xl bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center">
@@ -137,24 +137,24 @@ export const PublicContactSection: React.FC = () => {
               </span>
             </div>
             <div>
-              <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">Zurich Cold Vaults</h3>
+              <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">London Vaults</h3>
               <p className="text-xs text-slate-500 font-mono">Deep Custodial Infrastructure</p>
             </div>
             <div className="space-y-2 text-xs text-slate-600 dark:text-slate-400 font-sans">
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" />
-                <span>Bahnhofstrasse 45, 8001 Zurich, Switzerland</span>
+                <span>200 Aldersgate St, Barbican, London EC14 4HD, United Kingdom</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-teal-500 shrink-0" />
-                <a href="tel:+41442110984" className="font-mono text-slate-900 dark:text-slate-200 hover:text-teal-500 font-semibold">
-                  +41 44 211 0984
+                <a href="tel:+447900413315" className="font-mono text-slate-900 dark:text-slate-200 hover:text-teal-500 font-semibold">
+                  +44 7900 413315
                 </a>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-teal-500 shrink-0" />
-                <a href="mailto:support@growvest.com" className="font-mono text-slate-900 dark:text-slate-200 hover:text-teal-500 font-semibold">
-                  support@growvest.com
+                <a href="mailto:support@growvestx.com" className="font-mono text-slate-900 dark:text-slate-200 hover:text-teal-500 font-semibold">
+                  support@growvestx.com
                 </a>
               </div>
             </div>
@@ -205,11 +205,11 @@ export const PublicContactSection: React.FC = () => {
                 </div>
               </div>
               <div className="space-y-2.5 text-xs text-slate-600 dark:text-slate-400 font-mono">
-                <div>General & Support: <a href="mailto:support@growvest.com" className="text-emerald-600 dark:text-emerald-400 font-semibold hover:underline">support@growvest.com</a></div>
-                <div>Compliance & Legal: <a href="mailto:compliance@growvest.com" className="text-slate-900 dark:text-slate-200 font-semibold hover:underline">compliance@growvest.com</a></div>
-                <div>Institutional Onboarding: <a href="mailto:institutional@growvest.com" className="text-slate-900 dark:text-slate-200 font-semibold hover:underline">institutional@growvest.com</a></div>
+                <div>General & Support: <a href="mailto:support@growvestx.com" className="text-emerald-600 dark:text-emerald-400 font-semibold hover:underline">support@growvestx.com</a></div>
+                <div>Compliance & Legal: <a href="mailto:support@growvestx.com" className="text-slate-900 dark:text-slate-200 font-semibold hover:underline">support@growvestx.com</a></div>
+                <div>Institutional Onboarding: <a href="mailto:support@growvestx.com" className="text-slate-900 dark:text-slate-200 font-semibold hover:underline">support@growvestx.com</a></div>
                 <div className="pt-1 text-[11px] text-slate-500">
-                  UK: <a href="tel:+442079460912" className="text-slate-900 dark:text-slate-200 font-semibold hover:underline">+44 20 7946 0912</a> • US: <a href="tel:+12125550198" className="text-slate-900 dark:text-slate-200 font-semibold hover:underline">+1 (212) 555-0198</a>
+                  Phone: <a href="tel:+447900413315" className="text-slate-900 dark:text-slate-200 font-semibold hover:underline">+44 7900 413315</a>
                 </div>
               </div>
             </div>

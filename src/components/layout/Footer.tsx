@@ -150,18 +150,14 @@ export const Footer: React.FC = () => {
             <h4 className="font-semibold text-slate-900 dark:text-slate-200 text-xs uppercase tracking-wider font-mono">Offices & Support</h4>
             <div className="space-y-2 text-xs">
               <div className="text-[11px] text-slate-600 dark:text-slate-400 space-y-1">
-                <div className="font-semibold text-slate-900 dark:text-slate-200">London Office:</div>
-                <div>25 Canada Square, Canary Wharf, London, E14 5LQ</div>
-              </div>
-              <div className="text-[11px] text-slate-600 dark:text-slate-400 space-y-1">
-                <div className="font-semibold text-slate-900 dark:text-slate-200">New York Office:</div>
-                <div>1 World Trade Center, Suite 8500, New York, NY 10007</div>
+                <div className="font-semibold text-slate-900 dark:text-slate-200">Office Address:</div>
+                <div>200 Aldersgate St, Barbican, London EC14 4HD, United Kingdom</div>
               </div>
               <div className="pt-1 text-[11px] font-mono text-emerald-600 dark:text-emerald-400">
-                support@growvest.com
+                support@growvestx.com
               </div>
               <div className="text-[11px] font-mono text-slate-600 dark:text-slate-400">
-                +44 20 7946 0912 (UK) • +1 (212) 555-0198 (US)
+                +44 7900 413315
               </div>
             </div>
           </div>

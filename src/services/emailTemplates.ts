@@ -203,8 +203,7 @@ function renderEmailFooter(recipientEmail: string): string {
                 </tr>
                 <tr>
                   <td align="left" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 10px; line-height: 16px; color: #94a3b8; padding-top: 14px;" class="dark-text-muted">
-                    © ${new Date().getFullYear()} Growvest Financial Technology SA. Registered with Swiss Commercial Registry (CHE-392.810.492).<br />
-                    Gotthardstrasse 26, 8002 Zurich, Switzerland. All client digital assets held in segregated multi-party computation (MPC) cold vaults.
+                    © ${new Date().getFullYear()} GrowvestX Ltd. Office Address: 200 Aldersgate St, Barbican, London EC14 4HD, United Kingdom. Email: support@growvestx.com Phone: +44 7900 413315 Company Reg NO: 14892018 We are Registered in England & Wales.
                   </td>
                 </tr>
               </table>

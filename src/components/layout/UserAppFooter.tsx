@@ -72,8 +72,8 @@ export const UserAppFooter: React.FC = () => {
             <span>Security Center</span>
           </button>
 
-          <span className="text-slate-400 dark:text-slate-600">
-            © 2026 Growvest Global Technologies Inc.
+          <span className="text-slate-400 dark:text-slate-500 text-[10px] sm:text-[11px] leading-relaxed max-w-2xl text-center md:text-right">
+            <strong>GrowvestX Ltd.</strong> Office Address: 200 Aldersgate St, Barbican, London EC14 4HD, United Kingdom. Email: support@growvestx.com Phone: +44 7900 413315 Company Reg NO: 14892018 We are Registered in England & Wales.
           </span>
         </div>
       </div>
