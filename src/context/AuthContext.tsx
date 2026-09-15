@@ -1769,19 +1769,93 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     sendPasswordResetEmail,
     adminCreateCustomer,
     adminAssignCustomer: async () => ({ success: true }),
-    adminApproveUser: async () => ({ success: true }),
+    adminApproveUser: async (userId: string) => {
+      setAllUsers(prev => {
+        const next = prev.map(u => u.id === userId ? { ...u, accountStatus: 'active', verificationStatus: 'verified' } : u);
+        try { localStorage.setItem('growvest_all_users', JSON.stringify(next)); } catch (_e) {}
+        return next;
+      });
+      if (user && user.id === userId) {
+        const updated = { ...user, accountStatus: 'active', verificationStatus: 'verified' };
+        setUser(updated);
+        try { localStorage.setItem('growvest_current_user', JSON.stringify(updated)); } catch (_e) {}
+      }
+      return { success: true };
+    },
     adminApproveDeposit,
     adminRejectDeposit,
     adminApproveWithdrawal,
     adminRejectWithdrawal,
-    adminUpdateUserStatus: async () => ({ success: true }),
-    adminVerifyUserKyc: async () => ({ success: true }),
-    adminUpdateUserCountry: async () => ({ success: true }),
-    adminApproveKycSubmission: async () => ({ success: true }),
-    adminRejectKycSubmission: async () => ({ success: true }),
+    adminUpdateUserStatus: async (userId: string, status: UserAccountStatus) => {
+      setAllUsers(prev => {
+        const next = prev.map(u => u.id === userId ? { ...u, accountStatus: status } : u);
+        try { localStorage.setItem('growvest_all_users', JSON.stringify(next)); } catch (_e) {}
+        return next;
+      });
+      if (user && user.id === userId) {
+        const updated = { ...user, accountStatus: status };
+        setUser(updated);
+        try { localStorage.setItem('growvest_current_user', JSON.stringify(updated)); } catch (_e) {}
+      }
+      return { success: true };
+    },
+    adminVerifyUserKyc: async (userId: string, status: UserVerificationStatus) => {
+      setAllUsers(prev => {
+        const next = prev.map(u => u.id === userId ? { ...u, verificationStatus: status } : u);
+        try { localStorage.setItem('growvest_all_users', JSON.stringify(next)); } catch (_e) {}
+        return next;
+      });
+      if (user && user.id === userId) {
+        const updated = { ...user, verificationStatus: status };
+        setUser(updated);
+        try { localStorage.setItem('growvest_current_user', JSON.stringify(updated)); } catch (_e) {}
+      }
+      return { success: true };
+    },
+    adminUpdateUserCountry: async (userId: string, country: string) => {
+      setAllUsers(prev => {
+        const next = prev.map(u => u.id === userId ? { ...u, country } : u);
+        try { localStorage.setItem('growvest_all_users', JSON.stringify(next)); } catch (_e) {}
+        return next;
+      });
+      if (user && user.id === userId) {
+        const updated = { ...user, country };
+        setUser(updated);
+        try { localStorage.setItem('growvest_current_user', JSON.stringify(updated)); } catch (_e) {}
+      }
+      return { success: true };
+    },
+    adminApproveKycSubmission: async (id: string, note?: string) => {
+      setKycSubmissions(prev => {
+        const next = prev.map(k => k.id === id ? { ...k, status: 'approved' as const, adminNote: note } : k);
+        try { localStorage.setItem('growvest_kyc_submissions', JSON.stringify(next)); } catch (_e) {}
+        return next;
+      });
+      return { success: true };
+    },
+    adminRejectKycSubmission: async (id: string, reason?: string) => {
+      setKycSubmissions(prev => {
+        const next = prev.map(k => k.id === id ? { ...k, status: 'rejected' as const, adminNote: reason } : k);
+        try { localStorage.setItem('growvest_kyc_submissions', JSON.stringify(next)); } catch (_e) {}
+        return next;
+      });
+      return { success: true };
+    },
     adminCreditUserWallet,
     adminDebitUserWallet,
-    adminEditUserFields: async () => ({ success: true }),
+    adminEditUserFields: async (userId: string, updates: Partial<UserProfile>) => {
+      setAllUsers(prev => {
+        const next = prev.map(u => u.id === userId ? { ...u, ...updates } : u);
+        try { localStorage.setItem('growvest_all_users', JSON.stringify(next)); } catch (_e) {}
+        return next;
+      });
+      if (user && user.id === userId) {
+        const updated = { ...user, ...updates };
+        setUser(updated);
+        try { localStorage.setItem('growvest_current_user', JSON.stringify(updated)); } catch (_e) {}
+      }
+      return { success: true };
+    },
     adminEditTransaction: async () => ({ success: true }),
     adminDeleteTransaction: async () => ({ success: true }),
     adminAddUserTransaction: async (_u, txData) => ({ success: true, transaction: { ...txData, id: `tx_${Date.now()}` } }),

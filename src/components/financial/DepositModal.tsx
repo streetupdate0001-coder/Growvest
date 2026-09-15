@@ -37,14 +37,63 @@ export const DepositModal: React.FC = () => {
   const { wallet, deposit, companyDepositWallets } = useAuth();
 
   const activeDepositMethods = companyDepositWallets.filter(w => w.isActive);
+  const fallbackWallets = [
+    {
+      id: 'wlt_usdt_trc20',
+      name: 'USDT (Tether USD)',
+      asset: 'USDT',
+      symbol: 'USDT',
+      network: 'Tron (TRC-20)',
+      address: 'TJb6GZeNaFiN7ech9XvYq8q9L2p5K3z1wR',
+      qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=TJb6GZeNaFiN7ech9XvYq8q9L2p5K3z1wR',
+      minDepositUsd: 50,
+      processingTime: '1-3 mins',
+      feeDescription: '$0.00 Platform Fee',
+      instructions: 'Send only USDT via Tron (TRC-20) network.',
+      isActive: true,
+      isPopular: true
+    },
+    {
+      id: 'wlt_btc_native',
+      name: 'Bitcoin (BTC)',
+      asset: 'BTC',
+      symbol: 'BTC',
+      network: 'Bitcoin Native (SegWit)',
+      address: 'bc1qgz9eza8fintech9930xklr83920mdfqp8z721',
+      qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=bc1qgz9eza8fintech9930xklr83920mdfqp8z721',
+      minDepositUsd: 100,
+      processingTime: '10-30 mins',
+      feeDescription: '$0.00 Platform Fee',
+      instructions: 'Send BTC to this cold vault address.',
+      isActive: true,
+      isPopular: true
+    },
+    {
+      id: 'wlt_eth_native',
+      name: 'Ethereum (ETH)',
+      asset: 'ETH',
+      symbol: 'ETH',
+      network: 'Ethereum Mainnet (ERC-20)',
+      address: '0x3c9F8229Be44510B55Fe495C557F89bA47444390',
+      qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=0x3c9F8229Be44510B55Fe495C557F89bA47444390',
+      minDepositUsd: 100,
+      processingTime: '3-5 mins',
+      feeDescription: '$0.00 Platform Fee',
+      instructions: 'Send only ETH via Ethereum Mainnet.',
+      isActive: true,
+      isPopular: true
+    }
+  ];
+  const availableMethods = activeDepositMethods.length > 0 ? activeDepositMethods : fallbackWallets;
+
   const [selectedWalletId, setSelectedWalletId] = useState<string>(
-    activeDepositMethods.length > 0 ? activeDepositMethods[0].id : 'wlt_usdt_trc20'
+    availableMethods.length > 0 ? availableMethods[0].id : 'wlt_usdt_trc20'
   );
 
   // Keep selected wallet synchronized if admin updates/adds wallets
   useEffect(() => {
-    if (activeDepositMethods.length > 0 && !activeDepositMethods.some(w => w.id === selectedWalletId)) {
-      setSelectedWalletId(activeDepositMethods[0].id);
+    if (availableMethods.length > 0 && !availableMethods.some(w => w.id === selectedWalletId)) {
+      setSelectedWalletId(availableMethods[0].id);
     }
   }, [companyDepositWallets]);
 
@@ -62,7 +111,7 @@ export const DepositModal: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const selectedWallet = activeDepositMethods.find(w => w.id === selectedWalletId) || activeDepositMethods[0];
+  const selectedWallet = availableMethods.find(w => w.id === selectedWalletId) || availableMethods[0];
 
   if (!depositModalOpen) return null;
 
@@ -238,7 +287,7 @@ export const DepositModal: React.FC = () => {
                 {t('deposit.selectAsset', 'Select Deposit Asset / Rail')}
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-44 overflow-y-auto pr-1">
-                {activeDepositMethods.map(w => (
+                {availableMethods.map(w => (
                   <button
                     key={w.id}
                     type="button"
