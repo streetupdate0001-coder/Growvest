@@ -44,15 +44,15 @@ export const CardsView: React.FC = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const spendingAmount = 344.20;
+  const spendingAmount = wallet ? (wallet.totalValueUsd > 0 ? Math.min(wallet.totalValueUsd * 0.05, 344.20) : 0.00) : 0.00;
   const spendingDays = [
-    { day: 'Sun', value: 120, active: false },
-    { day: 'Mon', value: 210, active: false },
-    { day: 'Tue', value: 180, active: false },
-    { day: 'Wed', value: 290, active: false },
-    { day: 'Thu', value: 344.2, active: true },
-    { day: 'Fri', value: 240, active: false },
-    { day: 'Sat', value: 190, active: false }
+    { day: 'Sun', value: spendingAmount > 0 ? 120 : 0, active: false },
+    { day: 'Mon', value: spendingAmount > 0 ? 210 : 0, active: false },
+    { day: 'Tue', value: spendingAmount > 0 ? 180 : 0, active: false },
+    { day: 'Wed', value: spendingAmount > 0 ? 290 : 0, active: false },
+    { day: 'Thu', value: spendingAmount, active: true },
+    { day: 'Fri', value: spendingAmount > 0 ? 240 : 0, active: false },
+    { day: 'Sat', value: spendingAmount > 0 ? 190 : 0, active: false }
   ];
 
   return (
