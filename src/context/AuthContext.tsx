@@ -1771,12 +1771,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     adminAssignCustomer: async () => ({ success: true }),
     adminApproveUser: async (userId: string) => {
       setAllUsers(prev => {
-        const next = prev.map(u => u.id === userId ? { ...u, accountStatus: 'active', verificationStatus: 'verified' } : u);
+        const next = prev.map(u => u.id === userId ? { ...u, accountStatus: 'active' as UserAccountStatus, verificationStatus: 'verified' as UserVerificationStatus } : u);
         try { localStorage.setItem('growvest_all_users', JSON.stringify(next)); } catch (_e) {}
         return next;
       });
       if (user && user.id === userId) {
-        const updated = { ...user, accountStatus: 'active', verificationStatus: 'verified' };
+        const updated = { ...user, accountStatus: 'active' as UserAccountStatus, verificationStatus: 'verified' as UserVerificationStatus };
         setUser(updated);
         try { localStorage.setItem('growvest_current_user', JSON.stringify(updated)); } catch (_e) {}
       }
