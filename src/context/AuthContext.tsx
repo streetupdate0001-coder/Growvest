@@ -208,9 +208,9 @@ const INITIAL_SYSTEM_USERS: UserProfile[] = [
 
 const INITIAL_WALLETS_MAP: Record<string, UserWallet> = {
   usr_admin_master: {
-    totalValueUsd: 128450.00,
-    availableBalanceUsd: 45000.00,
-    investedBalanceUsd: 83450.00,
+    totalValueUsd: 0.00,
+    availableBalanceUsd: 0.00,
+    investedBalanceUsd: 0.00,
     pendingBalanceUsd: 0.00,
     lastUpdated: new Date().toISOString()
   }
@@ -411,6 +411,45 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
     return DEFAULT_COMPANY_DEPOSIT_WALLETS;
   });
+
+  // Hardcore demo cleanup & zero-balance reset on first load
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const cleanSlateVersion = localStorage.getItem('growvest_clean_slate_v4');
+      if (!cleanSlateVersion) {
+        localStorage.removeItem('growvest_transactions');
+        setTransactions([]);
+        
+        const walletsMap = localStorage.getItem('growvest_wallets_map');
+        if (walletsMap) {
+          try {
+            const parsed = JSON.parse(walletsMap);
+            const resetMap: Record<string, UserWallet> = {};
+            for (const uid of Object.keys(parsed)) {
+              resetMap[uid] = {
+                totalValueUsd: 0.00,
+                availableBalanceUsd: 0.00,
+                investedBalanceUsd: 0.00,
+                pendingBalanceUsd: 0.00,
+                lastUpdated: new Date().toISOString()
+              };
+            }
+            setUserWalletsMap(resetMap);
+            localStorage.setItem('growvest_wallets_map', JSON.stringify(resetMap));
+            setWallet(resetMap[user?.id || ''] || {
+              totalValueUsd: 0.00,
+              availableBalanceUsd: 0.00,
+              investedBalanceUsd: 0.00,
+              pendingBalanceUsd: 0.00,
+              lastUpdated: new Date().toISOString()
+            });
+          } catch (_e) {}
+        }
+        
+        localStorage.setItem('growvest_clean_slate_v4', 'true');
+      }
+    }
+  }, []);
 
   // Listen for storage events across tabs/components to keep deposit wallets instantly synchronized
   useEffect(() => {

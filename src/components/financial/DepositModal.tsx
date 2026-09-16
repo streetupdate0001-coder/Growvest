@@ -358,10 +358,11 @@ export const DepositModal: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => copyToClipboard(selectedWallet.address)}
-                      className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors shrink-0 cursor-pointer"
-                      title={copied ? t('deposit.copied', 'Copied!') : t('deposit.copy', 'Copy Address')}
+                      className="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium transition-colors shrink-0 cursor-pointer flex items-center gap-1.5"
+                      title={copied ? t('deposit.copied', 'Copied!') : t('deposit.copy', 'Copy Wallet Address')}
                     >
-                      {copied ? <Check className="w-3.5 h-3.5 text-blue-400" /> : <Copy className="w-3.5 h-3.5" />}
+                      {copied ? <Check className="w-3.5 h-3.5 text-white" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copied ? 'Copied' : 'Copy Wallet Address'}</span>
                     </button>
                   </div>
                 </div>
