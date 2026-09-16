@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Users,
   ShieldCheck,
@@ -93,10 +93,15 @@ export const AdminView: React.FC = () => {
     adminUpdateMediaItem,
     adminDeleteMediaItem,
     adminToggleMediaItemStatus,
-    getAdminStats
+    getAdminStats,
+    loadAdminData
   } = useAuth();
 
   const { addNotification } = useApp();
+
+  useEffect(() => {
+    loadAdminData();
+  }, [loadAdminData]);
 
   const [activeTab, setActiveTab] = useState<
     'overview' | 'users' | 'wallets' | 'transactions' | 'deposits' | 'withdrawals' | 'kyc' | 'plans' | 'cms' | 'audit' | 'smartsupp'

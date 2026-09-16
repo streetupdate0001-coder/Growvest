@@ -173,6 +173,7 @@ export interface AuthContextType {
   adminLoginAsUser: (userId: string) => Promise<{ success: boolean; error?: string }>;
   getUserWalletForAdmin: (userId: string) => UserWallet;
   getAdminStats: () => AdminSystemStats;
+  loadAdminData: () => Promise<void>;
 }
 
 const DEFAULT_ADMIN_USER: UserProfile = {
@@ -1997,7 +1998,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     adminResetUserPassword: async () => ({ success: true }),
     adminLoginAsUser: async () => ({ success: true }),
     getUserWalletForAdmin,
-    getAdminStats
+    getAdminStats,
+    loadAdminData
   };
 
   return (

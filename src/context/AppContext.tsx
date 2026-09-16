@@ -131,43 +131,7 @@ interface AppContextType {
   testVoiceNotification: () => void;
 }
 
-const INITIAL_NOTIFICATIONS: AppNotification[] = [
-  {
-    id: 'notif_1',
-    type: 'security',
-    title: 'New Secure Session Authenticated',
-    message: 'Authorized login detected from Chrome (macOS) in Zurich, Switzerland.',
-    timestamp: new Date(Date.now() - 1000 * 60 * 25).toISOString(),
-    read: false,
-    linkTab: 'security'
-  },
-  {
-    id: 'notif_2',
-    type: 'verification',
-    title: 'Identity Verification Verified',
-    message: 'Tier-1 Institutional passport verification has been confirmed.',
-    timestamp: new Date(Date.now() - 86400000).toISOString(),
-    read: false,
-    linkTab: 'profile'
-  },
-  {
-    id: 'notif_3',
-    type: 'transaction',
-    title: 'Inbound SEPA Deposit Confirmed',
-    message: 'Transfer of $5,000.00 USD (SEPA Instant) has completed settlement.',
-    timestamp: new Date(Date.now() - 86400000 * 2).toISOString(),
-    read: true,
-    linkTab: 'activity'
-  },
-  {
-    id: 'notif_4',
-    type: 'system',
-    title: 'Growvest Core Engine Update',
-    message: 'Real-time WebSocket market streams enhanced with sub-second latency.',
-    timestamp: new Date(Date.now() - 86400000 * 4).toISOString(),
-    read: true
-  }
-];
+const INITIAL_NOTIFICATIONS: AppNotification[] = [];
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
 
