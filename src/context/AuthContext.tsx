@@ -452,6 +452,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
+  // Fetch company deposit wallets from Supabase wallets table on mount
+  useEffect(() => {
+    const fetchSupabaseWallets = async () => {
+      try {
+        const { data, error } = await supabase.from('wallets').select('*');
+        if (!error && data && data.length > 0) {
+          const mapped = data.map((w: any) => ({
+            id: w.id,
+            name: `${w.coin_type || 'Crypto'} (${w.network || 'Mainnet'})`,
+            asset: w.coin_type || 'USDT',
+            symbol: w.coin_type || 'USDT',
+            network: w.network || 'Mainnet',
+            address: w.address || '',
+            qrCodeUrl: `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(w.address || '')}`,
+            minDepositUsd: 50,
+            processingTime: '1-3 mins',
+            feeDescription: '$0.00 Platform Fee',
+            instructions: `Send ${w.coin_type || 'crypto'} via ${w.network || 'Mainnet'}.`,
+            isActive: w.is_active ?? true,
+            isPopular: true
+          }));
+          setCompanyDepositWallets(mapped);
+        }
+      } catch (_e) {}
+    };
+    fetchSupabaseWallets();
+  }, []);
+
   // Listen for storage events across tabs/components to keep deposit wallets instantly synchronized
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
@@ -1121,6 +1149,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         passwordsMap[userData.email.toLowerCase()] = userData.password;
         if (userData.username) passwordsMap[userData.username.toLowerCase()] = userData.password;
         localStorage.setItem('greeneza_user_passwords', JSON.stringify(passwordsMap));
+      } catch (_e) {}
+
+      // Insert into Supabase profiles table with balance = 0
+      try {
+        await supabase.from('profiles').upsert([{
+          id: newUserId,
+          email: userData.email,
+          balance: 0,
+          full_name: fullName,
+          kyc_status: 'unverified'
+        }]);
       } catch (_e) {}
 
       // Initialize clean 0.00 wallet
@@ -1900,19 +1939,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     adminDeleteTransaction: async () => ({ success: true }),
     adminAddUserTransaction: async (_u, txData) => ({ success: true, transaction: { ...txData, id: `tx_${Date.now()}` } }),
     adminAddDepositWallet: async (w) => {
+      const id = `wlt_${Date.now()}`;
+      const coinType = w.asset || w.symbol || 'USDT';
+      const network = w.network || 'Mainnet';
+      const address = w.address || '';
+      const isActive = w.isActive ?? true;
+
+      try {
+        await supabase.from('wallets').insert([{
+          id,
+          coin_type: coinType,
+          address,
+          network,
+          is_active: isActive
+        }]);
+      } catch (_e) {}
+
       const nw = {
         ...w,
-        id: `wlt_${Date.now()}`,
-        qrCodeUrl: w.qrCodeUrl || `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(w.address)}`
+        id,
+        asset: coinType,
+        symbol: coinType,
+        network,
+        address,
+        isActive,
+        qrCodeUrl: `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(address)}`
       };
-      setCompanyDepositWallets(prev => {
-        const next = [nw, ...prev];
-        try { localStorage.setItem('growvest_company_deposit_wallets', JSON.stringify(next)); } catch (_e) {}
-        return next;
-      });
+      setCompanyDepositWallets(prev => [nw, ...prev]);
       return { success: true, wallet: nw };
     },
     adminUpdateDepositWallet: async (id, upd) => {
+      const dbUpd: any = {};
+      if (upd.asset || upd.symbol) dbUpd.coin_type = upd.asset || upd.symbol;
+      if (upd.address) dbUpd.address = upd.address;
+      if (upd.network) dbUpd.network = upd.network;
+      if (upd.isActive !== undefined) dbUpd.is_active = upd.isActive;
+
+      try {
+        await supabase.from('wallets').update(dbUpd).eq('id', id);
+      } catch (_e) {}
+
       setCompanyDepositWallets(prev => {
         const next = prev.map(w => {
           if (w.id === id) {
@@ -1930,6 +1996,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return { success: true };
     },
     adminDeleteDepositWallet: async (id) => {
+      try {
+        await supabase.from('wallets').delete().eq('id', id);
+      } catch (_e) {}
+
       setCompanyDepositWallets(prev => {
         const next = prev.filter(w => w.id !== id);
         try { localStorage.setItem('growvest_company_deposit_wallets', JSON.stringify(next)); } catch (_e) {}
@@ -1938,8 +2008,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return { success: true };
     },
     adminToggleDepositWalletStatus: async (id) => {
+      const target = companyDepositWallets.find(w => w.id === id);
+      const newStatus = target ? !target.isActive : true;
+
+      try {
+        await supabase.from('wallets').update({ is_active: newStatus }).eq('id', id);
+      } catch (_e) {}
+
       setCompanyDepositWallets(prev => {
-        const next = prev.map(w => w.id === id ? { ...w, isActive: !w.isActive } : w);
+        const next = prev.map(w => w.id === id ? { ...w, isActive: newStatus } : w);
         try { localStorage.setItem('growvest_company_deposit_wallets', JSON.stringify(next)); } catch (_e) {}
         return next;
       });
