@@ -1151,15 +1151,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.setItem('greeneza_user_passwords', JSON.stringify(passwordsMap));
       } catch (_e) {}
 
-      // Insert into Supabase profiles table with balance = 0
+      // Insert into Supabase profiles table with balance = 0, currency USD
       try {
-        await supabase.from('profiles').upsert([{
+        await supabase.from('profiles').insert({
           id: newUserId,
           email: userData.email,
           balance: 0,
-          full_name: fullName,
-          kyc_status: 'unverified'
-        }]);
+          currency: 'USD'
+        });
       } catch (_e) {}
 
       // Initialize clean 0.00 wallet

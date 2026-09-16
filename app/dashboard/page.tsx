@@ -174,30 +174,19 @@ export default function DashboardPage({ onNavigate }: DashboardPageProps) {
         });
       }
 
-      // Default sample activity matching invest 1.jpg (Olivia Gardens, GRAB FOOD)
+      // Default sample activity
       if (activityList.length === 0) {
         activityList = [
           {
             id: 'TX-OG01',
             type: 'deposit',
-            amount: 5.00,
-            status: 'Received',
-            description: 'Payment from Olivia Gardens',
+            amount: 0.00,
+            status: 'Completed',
+            description: 'Institutional Transfer',
             created_at: new Date().toISOString(),
-            sender_name: 'Olivia Gardens',
-            time_label: '5 March • 12:47',
+            sender_name: 'Treasury',
+            time_label: 'Today',
             is_positive: true
-          },
-          {
-            id: 'TX-GF02',
-            type: 'payment',
-            amount: 17.00,
-            status: 'Payment',
-            description: 'Food & Dining Service',
-            created_at: new Date().toISOString(),
-            sender_name: 'GRAB FOOD',
-            time_label: '7 March • 10:14',
-            is_positive: false
           }
         ];
       }
