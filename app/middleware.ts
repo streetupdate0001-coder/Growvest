@@ -8,6 +8,12 @@ export interface AuthProfile {
   balance: number;
   total_balance?: number;
   created_at?: string;
+  phone?: string;
+  currency?: string;
+  photo_url?: string;
+  account_status?: string;
+  is_blocked?: boolean;
+  card_number?: string;
 }
 
 export interface MiddlewareAuthResult {

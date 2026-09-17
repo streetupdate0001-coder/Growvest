@@ -135,8 +135,8 @@ export default function LoginPage({ onSuccess, onNavigate }: LoginPageProps) {
               email: 'macreativehub1@gmail.com',
               full_name: 'Evans Vance',
               role: 'user',
-              balance: 14500.00,
-              total_balance: 39500.00
+              balance: 0.00,
+              total_balance: 0.00
             };
           } else if (isAdmin) {
             authUser = {
@@ -149,8 +149,8 @@ export default function LoginPage({ onSuccess, onNavigate }: LoginPageProps) {
               email: 'admin@growvest.com',
               full_name: 'System Administrator',
               role: 'admin',
-              balance: 100000.00,
-              total_balance: 100000.00
+              balance: 0.00,
+              total_balance: 0.00
             };
           } else {
             throw new Error('Invalid email or password. Please verify your credentials or use the Quick Fill options.');

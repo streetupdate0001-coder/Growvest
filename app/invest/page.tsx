@@ -242,6 +242,11 @@ export default function InvestPage({ onNavigate }: InvestPageProps) {
     if (!selectedPlan || !profile?.id) return;
 
     const amount = parseFloat(investAmount) || 0;
+    if (amount > availableBalance) {
+      setErrorMessage("Insufficient balance");
+      setIsSubmitting(false);
+      return;
+    }
     if (amount < selectedPlan.minAmount) {
       setErrorMessage(`Minimum investment for this plan is $${selectedPlan.minAmount.toLocaleString()}.`);
       return;
@@ -331,7 +336,7 @@ export default function InvestPage({ onNavigate }: InvestPageProps) {
   const portfolioVal = profile?.total_balance !== undefined && profile?.total_balance !== null
     ? Number(profile.total_balance)
     : availableBalance + (activePositions.reduce((acc, curr) => acc + (curr.amount || 0), 0));
-  const displayPortfolioVal = portfolioVal > 0 ? portfolioVal : 7410.00;
+  const displayPortfolioVal = portfolioVal > 0 ? portfolioVal : 0;
 
   return (
     <InvestorLayout profile={profile} activeRoute="invest" onNavigate={navigate}>
@@ -387,7 +392,7 @@ export default function InvestPage({ onNavigate }: InvestPageProps) {
         </div>
 
         {/* ============================================================ */}
-        {/* Hero Cyan Card: Portfolio Value $7,410.00 +78.4%            */}
+        {/* Hero Cyan Card: Portfolio Value $0            */}
         {/* Buttons: + Add Funds (White) & ↘ Withdraw (Glass)             */}
         {/* (invest 3.jpg)                                               */}
         {/* ============================================================ */}
@@ -442,7 +447,7 @@ export default function InvestPage({ onNavigate }: InvestPageProps) {
 
         {/* ============================================================ */}
         {/* Section: Trending ⓘ with View All > (invest 3.jpg)           */}
-        {/* Apple ($542.85 AAPLx +0.11%) | Abbott ($985.74 ABTx +0.24%) */}
+        {/* Apple ($0AAPLx +0.11%) | Abbott ($0 ABTx +0.24%) */}
         {/* ============================================================ */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">

@@ -174,23 +174,7 @@ export default function DashboardPage({ onNavigate }: DashboardPageProps) {
         });
       }
 
-      // Default sample activity
-      if (activityList.length === 0) {
-        activityList = [
-          {
-            id: 'TX-OG01',
-            type: 'deposit',
-            amount: 0.00,
-            status: 'Completed',
-            description: 'Institutional Transfer',
-            created_at: new Date().toISOString(),
-            sender_name: 'Treasury',
-            time_label: 'Today',
-            is_positive: true
-          }
-        ];
-      }
-
+      // No demo fallback activity
       setRecentActivity(activityList);
     } catch (err) {
       console.warn('[DashboardPage] Notice loading dashboard data:', err);
@@ -223,12 +207,12 @@ export default function DashboardPage({ onNavigate }: DashboardPageProps) {
     ? Number(profile.total_balance)
     : cashBalance + investedBalance;
 
-  // Display balance: if total is 0, display 2545.00 as benchmark or actual balance
-  const displayAmount = totalPortfolioBalance > 0 ? totalPortfolioBalance : 2545.00;
-  const eurEquivalent = (displayAmount * 0.865).toFixed(2);
+  // Display balance: strictly actual portfolio balance
+  const displayAmount = totalPortfolioBalance;
+  const eurEquivalent = (displayAmount * 0).toFixed(2);
 
-  const rizonBalance = cashBalance > 0 ? cashBalance : 582.00;
-  const globalBalance = investedBalance > 0 ? investedBalance : 785.00;
+  const rizonBalance = cashBalance;
+  const globalBalance = investedBalance;
 
   return (
     <InvestorLayout profile={profile} activeRoute="dashboard" onNavigate={navigate}>
@@ -236,7 +220,7 @@ export default function DashboardPage({ onNavigate }: DashboardPageProps) {
         
         {/* ============================================================ */}
         {/* 1. HERO CYAN CARD (Matches invest 1.jpg exactly)             */}
-        {/* Total Balance $2,545.00 ≈ €2,202.29                          */}
+        {/* Total Balance $0 ≈ €0                          */}
         {/* Buttons: + Deposit (White) & ↗ Send (Glass)                  */}
         {/* ============================================================ */}
         <div className="relative overflow-hidden rounded-[28px] p-6 bg-gradient-to-tr from-[#00A3FF] via-[#00B4F8] to-[#00C2FF] text-white shadow-xl shadow-[#00ACEE]/25 border border-white/20 transition-all">
@@ -317,7 +301,7 @@ export default function DashboardPage({ onNavigate }: DashboardPageProps) {
         {/* ============================================================ */}
         {/* 2. ACCOUNTS SECTION (Matches invest 1.jpg exactly)           */}
         {/* "Accounts ⓘ" with "View All >"                               */}
-        {/* Side-by-side: Rizon Wallet $582.00 | Global Accounts $785.00 */}
+        {/* Side-by-side: Rizon Wallet $0| Global Accounts $0 */}
         {/* ============================================================ */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
@@ -384,7 +368,7 @@ export default function DashboardPage({ onNavigate }: DashboardPageProps) {
         {/* ============================================================ */}
         {/* 3. RECENT TRANSACTIONS (Matches invest 1.jpg exactly)        */}
         {/* "Recent Transactions ⓘ" with "View All >"                    */}
-        {/* Olivia Gardens (+$5.00 Received) | GRAB FOOD (-$17.00 Payment)*/}
+        {/*(+$0 Received) | (-$0 )*/}
         {/* ============================================================ */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
@@ -403,8 +387,11 @@ export default function DashboardPage({ onNavigate }: DashboardPageProps) {
             </button>
           </div>
 
-          <div className="rounded-[24px] bg-white border border-slate-200/80 p-4 space-y-3 shadow-xs">
-            {recentActivity.map((tx, idx) => (
+          <div className="rounded-[24px] bg-white border border-slate-200/80 p-6 text-center space-y-2 shadow-xs">
+            {recentActivity.length === 0 ? (
+              <p className="text-xs text-slate-400 font-medium">No transactions yet</p>
+            ) : (
+              recentActivity.map((tx, idx) => (
               <div
                 key={tx.id || idx}
                 className="flex items-center justify-between py-1 first:pt-0 last:pb-0"
@@ -412,15 +399,9 @@ export default function DashboardPage({ onNavigate }: DashboardPageProps) {
                 <div className="flex items-center gap-3">
                   {/* Avatar / Icon circle */}
                   <div className="w-10 h-10 rounded-full bg-slate-100 border border-slate-200/60 flex items-center justify-center text-slate-700 font-extrabold text-sm overflow-hidden">
-                    {tx.sender_name?.toLowerCase().includes('grab') ? (
-                      <div className="w-full h-full bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                        <UtensilsCrossed className="w-4 h-4" />
-                      </div>
-                    ) : (
-                      <div className="w-full h-full bg-orange-100 text-orange-700 flex items-center justify-center">
-                        {tx.sender_name?.charAt(0) || 'O'}
-                      </div>
-                    )}
+                    <div className="w-full h-full bg-slate-200 text-slate-700 flex items-center justify-center">
+                      {tx.sender_name?.charAt(0) || 'T'}
+                    </div>
                   </div>
 
                   <div>
@@ -446,7 +427,8 @@ export default function DashboardPage({ onNavigate }: DashboardPageProps) {
                   </span>
                 </div>
               </div>
-            ))}
+            ))
+            )}
           </div>
         </div>
 

@@ -125,50 +125,34 @@ export default function CardsPage({ onNavigate }: CardsPageProps) {
         </div>
 
         {/* ============================================================ */}
-        {/* REALISTIC CARD POCKET WALLET (Matches invest 2.jpg exactly)  */}
-        {/* Dark pocket (#14161B) with 3 stacked cards peeking out       */}
-        {/* Cyan card ($4,74.00), Silver ($3,74.00), Coral ($4,58.00)   */}
-        {/* Front flap: Total Balance $11,545.00                         */}
+        {/* CARDS SECTION (Conditional on user card data)              */}
         {/* ============================================================ */}
-        <div className="relative pt-12">
-          {/* Card 1: Back Coral Card Peeking */}
-          <div className="absolute top-0 left-6 right-6 h-28 rounded-2xl bg-gradient-to-r from-rose-500 to-orange-400 p-4 shadow-md text-white flex justify-between items-start opacity-90 transform -rotate-1">
-            <span className="font-extrabold text-xs tracking-wider">Cirro</span>
-            <span className="font-mono text-xs font-bold">$4,58.00</span>
+        {profile?.card_number ? (
+          <div className="relative pt-12">
+            <div className="relative z-10 rounded-[28px] bg-[#14161B] border border-slate-800 p-6 shadow-2xl text-white space-y-3">
+              <div className="space-y-1">
+                <span className="text-xs font-medium text-slate-400">Card Balance</span>
+                <h2 className="text-3xl sm:text-4xl font-black font-mono tracking-tight text-white">
+                  ${Number(profile?.balance || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                </h2>
+              </div>
+              <div className="pt-2 flex items-center justify-between text-xs text-slate-400 font-mono">
+                <span>Card Holder: {cardHolderName}</span>
+                <span className="px-2 py-0.5 rounded-full bg-slate-800 text-cyan-400 border border-slate-700 text-[10px]">
+                  Active Card: {profile.card_number}
+                </span>
+              </div>
+            </div>
           </div>
-
-          {/* Card 2: Middle Silver/Chrome Card Peeking */}
-          <div className="absolute top-4 left-4 right-4 h-28 rounded-2xl bg-gradient-to-r from-slate-400 via-slate-300 to-slate-400 p-4 shadow-md text-slate-900 flex justify-between items-start opacity-95">
-            <span className="font-extrabold text-xs tracking-wider">Cirro</span>
-            <span className="font-mono text-xs font-bold">$3,74.00</span>
-          </div>
-
-          {/* Card 3: Top Vibrant Cyan Card Peeking */}
-          <div className="absolute top-8 left-2 right-2 h-28 rounded-2xl bg-gradient-to-r from-[#00A3FF] to-[#00C2FF] p-4 shadow-md text-white flex justify-between items-start">
-            <span className="font-extrabold text-xs tracking-wider">Cirro</span>
-            <span className="font-mono text-xs font-bold">$4,74.00</span>
-          </div>
-
-          {/* Dark Pocket Front Flap */}
-          <div className="relative z-10 mt-16 rounded-[28px] bg-[#14161B] border border-slate-800 p-6 shadow-2xl text-white space-y-3">
-            {/* Curved stitched notch at the top */}
-            <div className="w-16 h-1 bg-slate-700/80 rounded-full mx-auto -mt-2 mb-3" />
-
+        ) : (
+          <div className="p-8 rounded-[24px] bg-white border border-slate-200/80 text-center space-y-3 shadow-xs">
+            <CreditCard className="w-10 h-10 text-slate-300 mx-auto" />
             <div className="space-y-1">
-              <span className="text-xs font-medium text-slate-400">Total Balance</span>
-              <h2 className="text-3xl sm:text-4xl font-black font-mono tracking-tight text-white">
-                $11,545.00
-              </h2>
-            </div>
-
-            <div className="pt-2 flex items-center justify-between text-xs text-slate-400 font-mono">
-              <span>Card Holder: {cardHolderName}</span>
-              <span className="px-2 py-0.5 rounded-full bg-slate-800 text-cyan-400 border border-slate-700 text-[10px]">
-                3 Active Cards
-              </span>
+              <h4 className="text-sm font-bold text-slate-900">No Active Cards Assigned</h4>
+              <p className="text-xs text-slate-400">Request a virtual or physical payment card using the '+' button above.</p>
             </div>
           </div>
-        </div>
+        )}
 
         {/* ============================================================ */}
         {/* Simplify Your Payments Banner (Tap & Pay with Apple Wallet)  */}
@@ -214,31 +198,31 @@ export default function CardsPage({ onNavigate }: CardsPageProps) {
                   <UtensilsCrossed className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="text-xs font-bold text-slate-900 block">GRAB FOOD</span>
-                  <span className="text-[10px] text-slate-400 font-mono">7 March • 10:14</span>
+                  <span className="text-xs font-bold text-slate-900 block"></span>
+                  <span className="text-[10px] text-slate-400 font-mono">• </span>
                 </div>
               </div>
 
               <div className="text-right">
-                <span className="text-xs font-black font-mono text-rose-600 block">-$17.00</span>
+                <span className="text-xs font-black font-mono text-rose-600 block">-$0</span>
                 <span className="text-[10px] text-slate-400">Payment</span>
               </div>
             </div>
 
-            {/* Olivia Gardens */}
+            {}
             <div className="flex items-center justify-between pt-2 border-t border-slate-100">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-orange-100 text-orange-700 border border-orange-200 flex items-center justify-center font-bold text-sm">
                   O
                 </div>
                 <div>
-                  <span className="text-xs font-bold text-slate-900 block">Olivia Gardens</span>
-                  <span className="text-[10px] text-slate-400 font-mono">5 March • 12:47</span>
+                  <span className="text-xs font-bold text-slate-900 block"></span>
+                  <span className="text-[10px] text-slate-400 font-mono">• </span>
                 </div>
               </div>
 
               <div className="text-right">
-                <span className="text-xs font-black font-mono text-emerald-600 block">+$5.00</span>
+                <span className="text-xs font-black font-mono text-emerald-600 block">+$0</span>
                 <span className="text-[10px] text-slate-400">Received</span>
               </div>
             </div>
@@ -247,7 +231,7 @@ export default function CardsPage({ onNavigate }: CardsPageProps) {
 
         {/* ============================================================ */}
         {/* INTERACTIVE GROWVEST VAULT CARD (Ending 8892)                */}
-        {/* Retains: Freeze, Details, Top Up, Spending ($344.20)         */}
+        {/* Retains: Freeze, Details, Top Up, Spending ($0)         */}
         {/* ============================================================ */}
         <div className="pt-2 space-y-3">
           <div className="flex items-center justify-between">
