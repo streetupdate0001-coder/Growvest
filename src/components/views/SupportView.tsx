@@ -150,16 +150,26 @@ export const SupportView: React.FC = () => {
             </div>
             <h3 className="font-bold text-sm tracking-tight">One-Click Contact</h3>
             <p className="text-xs text-emerald-100 leading-relaxed">
-              Your users are a tap away from reaching your support. No more navigating away from your app!
+              Your users are a tap away from reaching your support via Telegram or live chat.
             </p>
           </div>
-          <button
-            onClick={handleOpenSmartsupp}
-            className="w-full py-2.5 rounded-xl bg-white hover:bg-emerald-50 text-emerald-900 font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
-          >
-            <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Launch Live Chat Now</span>
-          </button>
+          <div className="space-y-2">
+            <button
+              onClick={handleOpenSmartsupp}
+              className="w-full py-2 rounded-xl bg-white hover:bg-emerald-50 text-emerald-900 font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
+            >
+              <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Launch Live Chat Now</span>
+            </button>
+            <a
+              href="https://t.me/Greenvillesfx90"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-2 rounded-xl bg-[#2AABEE] hover:bg-[#229ed9] text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
+            >
+              <span>Open Telegram Chat Now</span>
+            </a>
+          </div>
         </div>
 
         {/* Box 2: Push Notifications */}
