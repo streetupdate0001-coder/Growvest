@@ -83,17 +83,17 @@ export const ProfileView: React.FC = () => {
   const [isEditingContact, setIsEditingContact] = useState(false);
   const [isEditingPreferences, setIsEditingPreferences] = useState(false);
 
-  const [firstName, setFirstName] = useState(user?.firstName || 'Alexander');
-  const [lastName, setLastName] = useState(user?.lastName || 'Vance');
-  const [username, setUsername] = useState(user?.username || 'avance_fin');
-  const [dob, setDob] = useState(user?.dateOfBirth || '1988-04-12');
-  const [country, setCountry] = useState(user?.country || 'Switzerland');
-  const [phoneCountryCode, setPhoneCountryCode] = useState(user?.phoneCountryCode || '+41');
-  const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber || '79 482 9104');
-  const [address, setAddress] = useState(user?.address || 'Gotthardstrasse 26');
-  const [city, setCity] = useState(user?.city || 'Zurich');
-  const [postalCode, setPostalCode] = useState(user?.postalCode || '8002');
-  const [antiPhishing, setAntiPhishing] = useState(user?.antiPhishingPhrase || 'GZ-VANCE-88');
+  const [firstName, setFirstName] = useState(user?.firstName || '');
+  const [lastName, setLastName] = useState(user?.lastName || '');
+  const [username, setUsername] = useState(user?.username || '');
+  const [dob, setDob] = useState(user?.dateOfBirth || '');
+  const [country, setCountry] = useState(user?.country || '');
+  const [phoneCountryCode, setPhoneCountryCode] = useState(user?.phoneCountryCode || '+');
+  const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber || '');
+  const [address, setAddress] = useState(user?.address || '');
+  const [city, setCity] = useState(user?.city || '');
+  const [postalCode, setPostalCode] = useState(user?.postalCode || '');
+  const [antiPhishing, setAntiPhishing] = useState(user?.antiPhishingPhrase || '');
 
   const [isSaving, setIsSaving] = useState(false);
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
@@ -123,21 +123,21 @@ export const ProfileView: React.FC = () => {
   // Mock Active Sessions
   const [sessions, setSessions] = useState([
     {
-      id: 'sess-1',
-      device: 'MacBook Pro (M3 Max)',
-      browser: 'Chrome 128 (macOS)',
-      ip: '194.230.148.91',
-      location: 'Zurich, Switzerland',
-      lastActive: 'Active Now',
+      id: '',
+      device: '',
+      browser: '',
+      ip: '',
+      location: '',
+      lastActive: '',
       isCurrent: true
     },
     {
       id: 'sess-2',
-      device: 'iPhone 16 Pro',
-      browser: 'Safari Mobile 18',
-      ip: '194.230.148.95',
-      location: 'Geneva, Switzerland',
-      lastActive: '2 hours ago',
+      device: '',
+      browser: '',
+      ip: '',
+      location: '',
+      lastActive: '',
       isCurrent: false
     }
   ]);

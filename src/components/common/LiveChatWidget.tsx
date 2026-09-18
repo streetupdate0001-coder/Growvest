@@ -35,7 +35,7 @@ interface ChatMessage {
 }
 
 const TELEGRAM_NUMBER = '447900413315'; // +44 79 0041 3315
-const TELEGRAM_DISPLAY = '+44 79 0041 3315';
+const TELEGRAM_DISPLAY = '+44 7900 413315';
 
 export const LiveChatWidget: React.FC = () => {
   const { t, setDepositModalOpen, setActiveTab, setIsAiAssistantOpen, addNotification } = useApp();
@@ -181,8 +181,8 @@ export const LiveChatWidget: React.FC = () => {
   const openTelegram = (customText?: string) => {
     const defaultText = customText || (
       isAuthenticated && user
-        ? `Hello GreenEza Support Desk, I am ${user.firstName} ${user.lastName} (${user.email}). I would like to inquire about investment strategies and deposit assistance.`
-        : `Hello GreenEza Support Desk, I would like to inquire about your investment portfolios and deposit options.`
+        ? `Hello Growvestx Support Desk, I am ${user.firstName} ${user.lastName} (${user.email}). I would like to inquire about investment strategies and deposit assistance.`
+        : `Hello Growvestx Support Desk, I would like to inquire about your investment portfolios and deposit options.`
     );
     const encoded = encodeURIComponent(defaultText);
     // Link directly to Telegram with international phone number +44 79 0041 3315
@@ -208,7 +208,7 @@ export const LiveChatWidget: React.FC = () => {
 
     // Smart institutional auto-responder & agent response simulation
     setTimeout(() => {
-      let reply = "Thank you for reaching out to GreenEza Smartsupp Support. An institutional advisor is reviewing your request.";
+      let reply = "Thank you for reaching out to Growvestx Smartsupp Support. An institutional advisor is reviewing your request.";
       const lower = text.toLowerCase();
 
       if (lower.includes('deposit') || lower.includes('proof') || lower.includes('payment') || lower.includes('screenshot') || lower.includes('fund')) {
@@ -275,7 +275,7 @@ export const LiveChatWidget: React.FC = () => {
         }
       ]);
       setIsTyping(false);
-      smartsuppService.triggerAgentResponseNotification('Elena Rostova', reply);
+      smartsuppService.triggerAgentResponseNotification('', reply);
     }, 800);
   };
 

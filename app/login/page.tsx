@@ -1,4 +1,3 @@
-const SITE_URL = typeof window !== 'undefined' ? window.location.origin : 'https://growvestx.com'
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../src/lib/supabase';
 import { ShieldCheck, Mail, Lock, Eye, EyeOff, ArrowRight, AlertCircle, CheckCircle2, User, Loader2 } from 'lucide-react';

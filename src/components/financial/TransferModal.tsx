@@ -32,9 +32,9 @@ export const TransferModal: React.FC = () => {
   const [accountNo, setAccountNo] = useState('');
   const [accountName, setAccountName] = useState('');
 
-  // Step 2 OTP State
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
-  const [otpCountdown, setOtpCountdown] = useState(45);
+  // Step 2 PIN State
+  const [transferPin, setTransferPin] = useState('');
+  const [pinError, setPinError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -48,24 +48,13 @@ export const TransferModal: React.FC = () => {
       setAmount('');
       setBank('');
       setAccountNo('');
-      setAccountName(user ? `${user.firstName} ${user.lastName}`.trim() : 'EVANS CREATIVE HUB');
-      setOtp(['', '', '', '', '', '']);
-      setOtpCountdown(45);
+      setAccountName(user ? `${user.firstName} ${user.lastName}`.trim() : '');
+      setTransferPin('');
+      setPinError(null);
       setErrorMessage(null);
       setTxId(`TX-${Date.now().toString().slice(-8)}`);
     }
   }, [transferModalOpen, user]);
-
-  // OTP Countdown
-  useEffect(() => {
-    let interval: any = null;
-    if (step === 2 && otpCountdown > 0) {
-      interval = setInterval(() => {
-        setOtpCountdown((prev) => (prev > 0 ? prev - 1 : 0));
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [step, otpCountdown]);
 
   if (!transferModalOpen) return null;
 
@@ -79,6 +68,10 @@ export const TransferModal: React.FC = () => {
 
     if (numAmount <= 0) {
       setErrorMessage('Please enter a valid transfer amount.');
+      return;
+    }
+    if (numAmount > availableBalance) {
+      setErrorMessage('Insufficient balance for this transfer.');
       return;
     }
     if (!bank.trim()) {
@@ -97,42 +90,30 @@ export const TransferModal: React.FC = () => {
     setStep(2);
   };
 
-  // OTP Input Change
-  const handleOtpChange = (index: number, val: string) => {
-    if (val.length > 1) {
-      val = val.slice(-1);
-    }
-    const updated = [...otp];
-    updated[index] = val;
-    setOtp(updated);
-
-    // Auto-focus next field
-    if (val && index < 5) {
-      const nextInput = document.getElementById(`otp-input-${index + 1}`);
-      if (nextInput) nextInput.focus();
-    }
-  };
-
-  const handleOtpKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
-      const prevInput = document.getElementById(`otp-input-${index - 1}`);
-      if (prevInput) prevInput.focus();
-    }
-  };
-
-  // Step 2 Submission -> Step 3
+  // Step 2 Submission -> Step 3 (PIN verification)
   const handleStep2Submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setPinError(null);
     setErrorMessage(null);
 
-    const fullOtp = otp.join('');
-    if (fullOtp.length < 6) {
-      setErrorMessage('Please enter the complete 6-digit OTP verification code.');
+    if (!transferPin || transferPin.length < 4) {
+      setPinError('Please enter your 4-digit Transfer PIN.');
       return;
     }
 
     setIsSubmitting(true);
     try {
+      if (user?.id) {
+        // 1. Check if user has set PIN in profile
+        const { data: profile } = await supabase.from('profiles').select('transfer_pin').eq('id', user.id).single();
+        
+        if (profile?.transfer_pin && transferPin !== profile.transfer_pin) {
+          setPinError('Invalid Transfer PIN.');
+          setIsSubmitting(false);
+          return;
+        }
+      }
+
       const generatedTxId = `TX-${Date.now().toString().slice(-8)}`;
       setTxId(generatedTxId);
 
@@ -149,7 +130,6 @@ export const TransferModal: React.FC = () => {
           }
         ]);
 
-        // Also save to withdrawals table if present
         await supabase.from('withdrawals').insert([
           {
             user_id: user.id,
@@ -160,26 +140,10 @@ export const TransferModal: React.FC = () => {
         ]);
       }
 
-      // Also store locally for fallback sync
-      if (typeof window !== 'undefined' && user?.id) {
-        const localKey = `growvest_pending_payouts_${user.id}`;
-        const existing = JSON.parse(localStorage.getItem(localKey) || '[]');
-        existing.unshift({
-          id: generatedTxId,
-          amount: numAmount,
-          bank,
-          accountNo,
-          accountName,
-          status: 'pending',
-          created_at: new Date().toISOString()
-        });
-        localStorage.setItem(localKey, JSON.stringify(existing));
-      }
-
       setStep(3);
     } catch (err: any) {
       console.warn('[TransferModal] notice recording to Supabase:', err);
-      setStep(3); // Proceed smoothly to success confirmation
+      setStep(3);
     } finally {
       setIsSubmitting(false);
     }
@@ -207,65 +171,61 @@ export const TransferModal: React.FC = () => {
         <button
           type="button"
           onClick={() => setTransferModalOpen(false)}
-          className="absolute right-4 top-4 w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 text-slate-500 hover:text-slate-900 transition-colors cursor-pointer"
+          className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-800 transition-all cursor-pointer"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4" />
         </button>
 
-        {/* Step Indicator Header */}
+        {/* Modal Header */}
         <div className="flex items-center gap-3 mb-5">
-          <div className="w-11 h-11 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100">
+          <div className="w-11 h-11 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center shadow-xs">
             <Send className="w-5 h-5" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-base font-extrabold text-slate-900">Send Funds</h3>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 border border-blue-200">
-                Step {step} of 3
-              </span>
-            </div>
-            <p className="text-xs text-slate-500 font-medium">
-              {step === 1 && 'Enter destination account and amount'}
-              {step === 2 && 'Review and enter 6-digit confirmation code'}
-              {step === 3 && 'Transfer queued for clearance'}
+            <h3 className="text-base sm:text-lg font-black tracking-tight text-slate-900">
+              {step === 1 && 'Wire / Bank Transfer'}
+              {step === 2 && 'Confirm & Enter PIN'}
+              {step === 3 && 'Transfer Submitted'}
+            </h3>
+            <p className="text-xs text-slate-500">
+              {step === 1 && 'Dispatch funds to external bank accounts'}
+              {step === 2 && 'Secure transaction authorization'}
+              {step === 3 && 'Order logged successfully'}
             </p>
           </div>
         </div>
 
-        {/* Progress Bar */}
-        <div className="w-full bg-slate-100 h-1.5 rounded-full mb-6 overflow-hidden">
-          <div
-            className="bg-blue-600 h-full rounded-full transition-all duration-300"
-            style={{ width: step === 1 ? '33.3%' : step === 2 ? '66.6%' : '100%' }}
-          />
-        </div>
-
-        {/* Error Alert */}
+        {/* Error Banner */}
         {errorMessage && (
-          <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
+          <div className="mb-4 p-3 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{errorMessage}</span>
           </div>
         )}
 
         {/* ============================================================ */}
-        {/* STEP 1: Amount, Bank, Account No, Account Name              */}
+        {/* STEP 1: Enter Transfer Details                              */}
         {/* ============================================================ */}
         {step === 1 && (
           <form onSubmit={handleStep1Submit} className="space-y-4">
+            {/* Available Balance pill */}
+            <div className="px-3.5 py-2.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-xs">
+              <span className="text-slate-500 font-medium">Available Liquidity</span>
+              <span className="font-mono font-extrabold text-slate-900">
+                ${availableBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              </span>
+            </div>
+
             {/* Amount */}
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                Amount ($ USD)
+                Transfer Amount ($ USD)
               </label>
               <div className="relative">
-                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-base">
-                  $
-                </span>
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">$</span>
                 <input
                   type="number"
-                  step="any"
-                  min="1"
+                  step="0.01"
                   required
                   placeholder="0.00"
                   value={amount}
@@ -273,25 +233,19 @@ export const TransferModal: React.FC = () => {
                   className="w-full pl-8 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-mono font-bold text-base focus:bg-white focus:border-blue-500 focus:outline-none transition-all"
                 />
               </div>
-              <div className="flex items-center justify-between text-[11px] text-slate-500 mt-1">
-                <span>Available Cash Balance:</span>
-                <span className="font-mono font-semibold text-slate-800">
-                  {formatCurrency(availableBalance, currentCurrency)}
-                </span>
-              </div>
             </div>
 
-            {/* Bank Name */}
+            {/* Destination Bank */}
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                Destination Bank
+                Destination Bank / Institution
               </label>
               <div className="relative">
                 <Building2 className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input
                   type="text"
                   required
-                  placeholder="e.g. JPMorgan Chase, Wells Fargo, Barclays"
+                  placeholder="e.g., Chase Bank, Barclays, HSBC"
                   value={bank}
                   onChange={(e) => setBank(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium text-xs sm:text-sm focus:bg-white focus:border-blue-500 focus:outline-none transition-all"
@@ -302,14 +256,14 @@ export const TransferModal: React.FC = () => {
             {/* Account Number */}
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                Account Number
+                Account Number / IBAN
               </label>
               <div className="relative">
                 <CreditCard className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input
                   type="text"
                   required
-                  placeholder="Enter 8-16 digit account number"
+                  placeholder="Enter account number"
                   value={accountNo}
                   onChange={(e) => setAccountNo(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-mono font-medium text-xs sm:text-sm focus:bg-white focus:border-blue-500 focus:outline-none transition-all"
@@ -347,7 +301,7 @@ export const TransferModal: React.FC = () => {
         )}
 
         {/* ============================================================ */}
-        {/* STEP 2: Confirm + Enter 6-digit OTP                         */}
+        {/* STEP 2: Confirm + Enter 4-digit Transfer PIN                */}
         {/* ============================================================ */}
         {step === 2 && (
           <form onSubmit={handleStep2Submit} className="space-y-4">
@@ -375,46 +329,30 @@ export const TransferModal: React.FC = () => {
               </div>
             </div>
 
-            {/* OTP Instructions */}
+            {/* PIN Instructions */}
             <div className="text-center pt-1">
               <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-2">
                 <Lock className="w-5 h-5" />
               </div>
-              <h4 className="text-sm font-bold text-slate-900">Enter 6-Digit OTP</h4>
+              <h4 className="text-sm font-bold text-slate-900">Enter Transfer PIN</h4>
               <p className="text-xs text-slate-500 max-w-xs mx-auto mt-0.5">
-                A verification code has been dispatched to your verified client session.
+                Enter your 4-digit security PIN to authorize this wire transfer.
               </p>
             </div>
 
-            {/* 6-Digit Pin Input Grid */}
-            <div className="flex justify-center gap-2 sm:gap-2.5 py-1">
-              {otp.map((digit, idx) => (
-                <input
-                  key={idx}
-                  id={`otp-input-${idx}`}
-                  type="text"
-                  maxLength={1}
-                  value={digit}
-                  onChange={(e) => handleOtpChange(idx, e.target.value)}
-                  onKeyDown={(e) => handleOtpKeyDown(idx, e)}
-                  className="w-10 sm:w-11 h-12 text-center text-lg font-mono font-bold bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all"
-                />
-              ))}
-            </div>
-
-            {/* Quick Demo Helper */}
-            <div className="flex items-center justify-between text-xs text-slate-500 pt-1">
-              <button
-                type="button"
-                onClick={() => setOtp(['8', '9', '4', '2', '1', '0'])}
-                className="text-blue-600 hover:underline font-semibold cursor-pointer"
-              >
-                Auto-Fill Code (894210)
-              </button>
-              <span className="flex items-center gap-1 font-mono">
-                <Clock className="w-3.5 h-3.5 text-slate-400" />
-                Resend in {otpCountdown}s
-              </span>
+            {/* PIN Input */}
+            <div>
+              <input
+                type="password"
+                inputMode="numeric"
+                maxLength={4}
+                placeholder="••••"
+                value={transferPin}
+                onChange={(e) => setTransferPin(e.target.value.replace(/\D/g, ''))}
+                className="w-full h-14 text-center text-2xl tracking-[0.5em] rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none font-mono"
+                required
+              />
+              {pinError && <p className="text-xs text-rose-500 mt-2 text-center font-medium">{pinError}</p>}
             </div>
 
             {/* Actions: Back & Confirm */}

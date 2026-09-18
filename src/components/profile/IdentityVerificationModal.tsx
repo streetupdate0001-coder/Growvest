@@ -12,7 +12,7 @@ export const IdentityVerificationModal: React.FC<IdentityVerificationModalProps>
   const { user, submitVerification } = useAuth();
   const [docType, setDocType] = useState<'passport' | 'id_card' | 'driving_license'>('passport');
   const [docNumber, setDocNumber] = useState('');
-  const [issuingCountry, setIssuingCountry] = useState(user?.country || 'Switzerland');
+  const [issuingCountry, setIssuingCountry] = useState(user?.country || '');
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);

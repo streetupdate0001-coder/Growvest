@@ -264,18 +264,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const dir = langInfo?.direction || 'ltr';
     document.documentElement.setAttribute('dir', dir);
     document.documentElement.setAttribute('lang', currentLanguage);
-    localStorage.setItem('greeneza_lang', currentLanguage);
+    localStorage.setItem('growvestx_lang', currentLanguage);
     if (i18n.isInitialized && i18n.language !== currentLanguage) {
       i18n.changeLanguage(currentLanguage);
     }
   }, [currentLanguage]);
 
   useEffect(() => {
-    localStorage.setItem('greeneza_curr', currentCurrency);
+    localStorage.setItem('growvestx_curr', currentCurrency);
   }, [currentCurrency]);
 
   useEffect(() => {
-    localStorage.setItem('greeneza_notifications', JSON.stringify(notifications));
+    localStorage.setItem('growvestx_notifications', JSON.stringify(notifications));
   }, [notifications]);
 
   // Listen for beforeinstallprompt
@@ -292,7 +292,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const setLanguage = (lang: LanguageCode) => {
     setCurrentLanguageState(lang);
     try {
-      localStorage.setItem('greeneza_lang', lang);
+      localStorage.setItem('growvestx_lang', lang);
       if (i18n.isInitialized) {
         i18n.changeLanguage(lang);
       }
@@ -378,7 +378,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Voice Notification & Market Volatility State
   const [isVoiceAlertsEnabled, setIsVoiceAlertsEnabled] = useState<boolean>(() => {
     try {
-      const saved = localStorage.getItem('greeneza_voice_notifications_enabled');
+      const saved = localStorage.getItem('growvestx_voice_notifications_enabled');
       return saved === 'true';
     } catch (_e) {
       return false;
@@ -387,7 +387,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const [voiceAlertSensitivity, setVoiceAlertSensitivityState] = useState<VoiceAlertSensitivity>(() => {
     try {
-      const saved = localStorage.getItem('greeneza_voice_alert_sensitivity');
+      const saved = localStorage.getItem('growvestx_voice_alert_sensitivity');
       if (saved === 'high' || saved === 'medium' || saved === 'low') return saved;
     } catch (_e) {
       // ignore
@@ -404,7 +404,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   useEffect(() => {
     try {
-      localStorage.setItem('greeneza_voice_notifications_enabled', String(isVoiceAlertsEnabled));
+      localStorage.setItem('growvestx_voice_notifications_enabled', String(isVoiceAlertsEnabled));
     } catch (_e) {
       // ignore
     }
@@ -412,7 +412,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   useEffect(() => {
     try {
-      localStorage.setItem('greeneza_voice_alert_sensitivity', voiceAlertSensitivity);
+      localStorage.setItem('growvestx_voice_alert_sensitivity', voiceAlertSensitivity);
     } catch (_e) {
       // ignore
     }

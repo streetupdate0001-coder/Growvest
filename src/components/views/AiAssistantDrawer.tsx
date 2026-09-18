@@ -301,7 +301,7 @@ export const AiAssistantDrawer: React.FC = () => {
   const generateDomainFallback = (query: string): { text: string; action?: ChatMessage['action'] } => {
     const q = query.toLowerCase();
 
-    if (q.includes('what') && (q.includes('site') || q.includes('do') || q.includes('greeneza') || q.includes('platform'))) {
+    if (q.includes('what') && (q.includes('site') || q.includes('do') || q.includes('growvestx') || q.includes('platform'))) {
       return {
         text: `🏛️ **GROWVEST Institutional Fintech Ecosystem**
 
@@ -332,8 +332,8 @@ When a client asks a specialized question not covered in the standard dashboard 
 1. **Record Details**: Note the client's registered Email address and unique Account ID.
 2. **Open Priority Ticket**: Direct the client to the **Support Center** to submit a high-priority support ticket with any relevant attachments.
 3. **Escalate to Senior Desk**:
-   • **General Support**: \`support@greeneza.com\`
-   • **Compliance & Institutional**: \`compliance@greeneza.com\`
+   • **General Support**: \`\`
+   • **Compliance & Institutional**: \`\`
    • **Executive Telegram Desk (UK)**: \`+44 79 0041 3315\`
 4. **SLA Assurance**: Reassure the client that institutional requests undergo compliance review with a turnaround under **2 business hours**.`,
         action: {

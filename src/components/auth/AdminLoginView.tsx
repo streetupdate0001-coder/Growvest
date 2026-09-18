@@ -118,8 +118,8 @@ export const AdminLoginView: React.FC<AdminLoginViewProps> = ({
           <button
             type="button"
             onClick={() => {
-              setEmail(ADMIN_CREDENTIALS.email);
-              setPassword(ADMIN_CREDENTIALS.password);
+              setEmail('admin@growvest.com');
+              setPassword('Admin@Growvest2026!');
               setAdminPin('889900');
             }}
             className="px-2.5 py-1 text-[11px] font-bold text-slate-950 bg-emerald-400 hover:bg-emerald-300 rounded-lg transition-colors shrink-0 shadow-sm"

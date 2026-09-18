@@ -942,11 +942,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           }
 
           try {
-            const passwordsMap = JSON.parse(localStorage.getItem('greeneza_user_passwords') || '{}');
+            const passwordsMap = JSON.parse(localStorage.getItem('growvestx_user_passwords') || '{}');
             passwordsMap[matchedUser.id] = password;
             passwordsMap[matchedUser.email.toLowerCase()] = password;
             passwordsMap[matchedUser.username.toLowerCase()] = password;
-            localStorage.setItem('greeneza_user_passwords', JSON.stringify(passwordsMap));
+            localStorage.setItem('growvestx_user_passwords', JSON.stringify(passwordsMap));
           } catch (_e) {}
 
           setAllUsers(prev => {
@@ -970,7 +970,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           });
 
           setUser(matchedUser);
-          localStorage.setItem('greeneza_auth_user', JSON.stringify(matchedUser));
+          localStorage.setItem('growvestx_auth_user', JSON.stringify(matchedUser));
           await loadUserData(matchedUser.id);
           supabase.auth.resend({ type: 'signup', email }).catch(() => {});
           return { user: matchedUser };
@@ -985,7 +985,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             const storedPass = passwordsMap[foundLocal.id] || passwordsMap[foundLocal.email.toLowerCase()];
             if (!storedPass || storedPass === password) {
               setUser(foundLocal);
-              localStorage.setItem('greeneza_auth_user', JSON.stringify(foundLocal));
+              localStorage.setItem('growvestx_auth_user', JSON.stringify(foundLocal));
               const userWlt = userWalletsMap[foundLocal.id] || {
                 totalValueUsd: foundLocal.balance || 0,
                 availableBalanceUsd: foundLocal.balance || 0,
@@ -1081,7 +1081,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         );
         if (fallbackUser) {
           setUser(fallbackUser);
-          localStorage.setItem('greeneza_auth_user', JSON.stringify(fallbackUser));
+          localStorage.setItem('growvestx_auth_user', JSON.stringify(fallbackUser));
           const wlt = userWalletsMap[fallbackUser.id] || {
             totalValueUsd: fallbackUser.balance || 0,
             availableBalanceUsd: fallbackUser.balance || 0,

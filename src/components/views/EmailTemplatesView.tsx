@@ -55,32 +55,32 @@ export const EmailTemplatesView: React.FC = () => {
 
   // Template Parameters State
   const [welcomeParams, setWelcomeParams] = useState<WelcomeEmailData>({
-    recipientName: user ? `${user.firstName} ${user.lastName}` : 'Alexander Vance',
-    recipientEmail: user ? user.email : 'alexander.vance@institutional-wealth.ch',
-    verificationCode: '849-201',
-    verificationUrl: 'https://greeneza.com/auth/verify?token=gz_wtk_948291048201',
+    recipientName: user ? `${user.firstName} ${user.lastName}` : '',
+    recipientEmail: user ? user.email : '',
+    verificationCode: '',
+    verificationUrl: '',
     accountTier: 'Level 1: Standard Institutional',
-    antiPhishingCode: 'GZ-VANCE-88',
+    antiPhishingCode: '',
     expiryMinutes: 60
   });
 
   const [resetParams, setResetParams] = useState<PasswordResetEmailData>({
-    recipientName: user ? `${user.firstName} ${user.lastName}` : 'Alexander Vance',
-    recipientEmail: user ? user.email : 'alexander.vance@institutional-wealth.ch',
-    resetUrl: 'https://greeneza.com/auth/reset-password?token=gz_rst_839021849102',
-    resetCode: 'GZ-RST-9104',
-    ipAddress: '194.209.14.88',
-    location: 'Zurich, Switzerland',
-    device: 'Chrome 128 (macOS Sequoia)',
+    recipientName: user ? `${user.firstName} ${user.lastName}` : '',
+    recipientEmail: user ? user.email : '',
+    resetUrl: '',
+    resetCode: '',
+    ipAddress: '',
+    location: '',
+    device: '',
     requestTimestamp: 'August 17, 2026 at 17:55 UTC',
     expiryMinutes: 15,
-    antiPhishingCode: 'GZ-VANCE-88',
-    freezeAccountUrl: 'https://greeneza.com/security/emergency-lock?account=alexander.vance'
+    antiPhishingCode: '',
+    freezeAccountUrl: ''
   });
 
   const [alertParams, setAlertParams] = useState<LoginAlertEmailData>({
-    recipientName: user ? `${user.firstName} ${user.lastName}` : 'Alexander Vance',
-    recipientEmail: user ? user.email : 'alexander.vance@institutional-wealth.ch',
+    recipientName: user ? `${user.firstName} ${user.lastName}` : '',
+    recipientEmail: user ? user.email : '',
     ipAddress: '82.165.197.1',
     location: 'London, Greater London, United Kingdom',
     device: 'Apple iPhone 16 Pro (iOS 19.1)',

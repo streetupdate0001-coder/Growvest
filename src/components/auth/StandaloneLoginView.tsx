@@ -338,7 +338,7 @@ export const StandaloneLoginView: React.FC<StandaloneLoginViewProps> = ({
                   autoFocus={!emailOrUser}
                   value={emailOrUser}
                   onChange={e => setEmailOrUser(e.target.value)}
-                  placeholder="client@invest-geneva.ch or username"
+                  placeholder="Sign in"
                   className="w-full pl-10 pr-4 py-3 rounded-2xl bg-slate-950 border border-slate-800 text-slate-100 text-sm font-medium focus:border-emerald-500 focus:outline-none transition-colors"
                 />
               </div>
@@ -497,7 +497,7 @@ export const StandaloneLoginView: React.FC<StandaloneLoginViewProps> = ({
                   required
                   value={regEmail}
                   onChange={e => setRegEmail(e.target.value)}
-                  placeholder="client@invest-geneva.ch"
+                  placeholder=""
                   className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 text-xs focus:border-emerald-500 focus:outline-none"
                 />
               </div>
@@ -629,7 +629,7 @@ export const StandaloneLoginView: React.FC<StandaloneLoginViewProps> = ({
                       required
                       value={forgotEmail}
                       onChange={e => setForgotEmail(e.target.value)}
-                      placeholder="client@invest-geneva.ch"
+                      placeholder=""
                       className="w-full pl-10 pr-4 py-3 rounded-2xl bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:border-emerald-500 focus:outline-none"
                     />
                   </div>
